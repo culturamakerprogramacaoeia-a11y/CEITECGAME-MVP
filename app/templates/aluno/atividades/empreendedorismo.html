@@ -1,100 +1,68 @@
 {% extends "base.html" %}
-{% block title %}Trilha da Startup Unicórnio{% endblock %}
+{% block title %}Trilha do Empreendedorismo Digital{% endblock %}
 
 {% block content %}
-<audio id="snd-success" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3" preload="auto"></audio>
-<audio id="snd-fail" src="https://assets.mixkit.co/active_storage/sfx/2021/2021-preview.mp3" preload="auto"></audio>
-<audio id="snd-path" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" preload="auto"></audio>
+<audio id="snd-correct" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" preload="auto"></audio>
+<audio id="snd-wrong" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3" preload="auto"></audio>
+<audio id="snd-step" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" preload="auto"></audio>
 
 <div class="container py-4">
-    <!-- Overlay de Reação Game-Feel -->
-    <div id="reaction-overlay" class="reaction-text animate__animated d-none">BOOOM!</div>
+    <div id="game-container" class="card mx-auto shadow-2xl animate__animated animate__fadeIn"
+        style="max-width: 900px; border-radius: 30px; border: none; background: #060515; min-height: 650px;">
 
-    <div id="sim-container" class="card mx-auto overflow-hidden animate__animated animate__zoomIn"
-        style="max-width: 950px; border-radius: 30px; border: none; background: #08071a; min-height: 600px; box-shadow: 0 0 50px rgba(124, 58, 237, 0.2);">
-
-        <!-- Header Dinâmico -->
-        <div class="p-4 d-flex justify-content-between align-items-center bg-dark-purple border-bottom border-accent2">
+        <!-- Header da Trilha -->
+        <div class="p-4 bg-dark-purple border-bottom border-accent2 d-flex justify-content-between align-items-center">
             <div class="font-orbitron">
-                <h4 class="m-0 text-white">TECH VENTURE <span class="text-accent2">TRAIL</span></h4>
-                <div class="d-flex gap-3 mt-2">
-                    <span class="badge border border-success text-success" id="val-badge">Valuation: $0.1M</span>
-                    <span class="badge border border-warning text-warning" id="energy-badge">Energia: 100%</span>
+                <h4 class="m-0 text-white">TRILHA DO <span class="text-accent2">EMPREENDEDORISMO DIGITAL</span></h4>
+                <div class="d-flex gap-3 mt-1">
+                    <span class="badge border border-success text-success" id="points-badge">XP: 0</span>
+                    <span class="badge border border-info text-info" id="level-badge">LEVEL: 1</span>
                 </div>
             </div>
-            <div class="progress-trail d-flex gap-2" id="trail-dots">
+            <div class="d-flex gap-2" id="trail-prog">
                 <!-- Dots representados por JS -->
             </div>
         </div>
 
-        <div class="card-body p-0 position-relative" id="main-sim-screen">
-            <!-- Camada de Fundo Dinâmica -->
-            <div id="sim-bg-layer" class="bg-gradient-tech"></div>
-
-            <div class="row g-0 h-100 position-relative" style="z-index: 2;">
-                <!-- Card de Pergunta/Ação -->
-                <div class="col-md-7 p-5 d-flex flex-column justify-content-center">
-                    <div id="step-content">
-                        <span class="badge bg-accent2 mb-3 px-3 py-2 text-uppercase letter-spacing-2" id="step-tag">FASE
-                            1: CONCEPÇÃO</span>
-                        <h1 id="step-title" class="display-5 text-white fw-bold mb-4 font-orbitron">IDEIA DE MILHÕES?
-                        </h1>
-                        <p id="step-desc" class="fs-4 text-muted mb-5">
-                            Você acaba de descobrir uma falha no mercado de logística global. Como você pretende atacar
-                            esse problema?
-                        </p>
-
-                        <div id="choices-container" class="d-grid gap-3">
-                            <!-- Botões de ação via JS -->
-                        </div>
-                    </div>
+        <div class="card-body p-5">
+            <div id="quiz-area" class="text-center">
+                <div id="curiosity-box"
+                    class="p-3 mb-4 rounded-4 bg-accent2-transparent animate__animated animate__lightSpeedInRight">
+                    <small class="text-accent2 font-orbitron fw-bold letter-spacing-2">💡 VOCÊ SABIA?</small>
+                    <p id="curiosity-text" class="text-white m-0 mt-2">O primeiro computador do mundo pesava 30
+                        toneladas e ocupava 167m².</p>
                 </div>
 
-                <!-- Lado Visual - Dashboard da Startup -->
-                <div class="col-md-5 p-5 bg-black-soft d-flex flex-column align-items-center justify-content-center">
-                    <div id="visual-report" class="text-center">
-                        <div class="unicorn-icon animate__animated animate__infinite animate__pulse mb-4">🦄</div>
-                        <h3 class="font-orbitron text-accent">$ <span id="valuation-counter">100,000</span></h3>
-                        <p class="text-muted">VALUATION ESTIMADO</p>
+                <div class="question-container my-5">
+                    <span class="text-muted d-block mb-2 text-uppercase font-orbitron smaller ls-2"
+                        id="step-count">QUESTÃO 1 DE 10</span>
+                    <h2 id="question-text" class="fw-bold text-white mb-4 display-6">O que significa a sigla MVP no
+                        mundo das startups?</h2>
+                </div>
 
-                        <div class="mt-5 text-start w-100 p-3 bg-dark rounded-4 border border-accent2">
-                            <h6 class="text-accent2 font-orbitron smaller"><i class="bi bi-terminal"></i> LOG DE
-                                MERCADO:</h6>
-                            <div id="market-log" class="small text-muted" style="height: 100px; overflow-y: auto;">
-                                > Sistema reiniciado...<br>
-                                > Aguardando primeira decisão estratégica...
-                            </div>
-                        </div>
-                    </div>
+                <div id="options-container" class="row g-3">
+                    <!-- Botões injetados via JS -->
                 </div>
             </div>
-        </div>
 
-        <!-- Tela de Vitória Épica -->
-        <div class="card-body p-5 text-center d-none" id="sim-win-screen">
-            <div class="animate__animated animate__bounceIn">
-                <div class="display-1 mb-3">💎</div>
-                <h1 class="font-orbitron display-3 text-accent shimmer-text">STARTUP UNICÓRNIO!</h1>
-                <p class="fs-3 text-muted">Você revolucionou o mercado e atingiu 1 Bilhão em valuation.</p>
+            <!-- Tela de Conclusão -->
+            <div id="conclusion-area" class="text-center d-none animate__animated animate__zoomIn">
+                <div class="display-1 mb-3">🚀</div>
+                <h1 class="font-orbitron display-4 text-accent mb-3">TRILHA CONCLUÍDA!</h1>
+                <p class="fs-4 text-muted mb-5">Você agora domina os conceitos fundamentais da tecnologia e negócios
+                    digitais.</p>
 
-                <div class="row g-4 my-5 justify-content-center">
-                    <div class="col-md-4">
-                        <div class="p-4 bg-dark-soft rounded-4 border border-accent">
-                            <h2 id="sim-xp" class="text-accent display-4 font-orbitron">0</h2>
-                            <small class="text-muted">XP ADQUIRIDO (NÍVEL LENDÁRIO)</small>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="p-4 bg-dark-soft rounded-4 border border-warning">
-                            <h2 id="sim-tc" class="text-warning display-4 font-orbitron">0</h2>
-                            <small class="text-muted">TECCOINS BONUS</small>
+                <div class="row g-4 justify-content-center mb-5">
+                    <div class="col-md-5">
+                        <div class="stat-box p-4 rounded-4 bg-dark-soft border border-accent">
+                            <h2 id="final-xp" class="text-accent display-4 font-orbitron">0</h2>
+                            <small class="text-muted">XP ADQUIRIDO</small>
                         </div>
                     </div>
                 </div>
 
-                <a href="{{ url_for('atividades.menu') }}"
-                    class="btn btn-purple btn-xl px-5 py-3 font-orbitron fs-4 animate__animated animate__pulse animate__infinite">
-                    CELEBRAR NO HUB!
+                <a href="{{ url_for('atividades.menu') }}" class="btn btn-purple btn-xl px-5 py-3 font-orbitron">
+                    VOLTAR AO HUB
                 </a>
             </div>
         </div>
@@ -103,109 +71,74 @@
 
 <style>
     .bg-dark-purple {
-        background: #130f2b;
+        background: #110e2b;
+        border-top-left-radius: 30px;
+        border-top-right-radius: 30px;
     }
 
-    .bg-black-soft {
-        background: rgba(0, 0, 0, 0.3);
-        backdrop-filter: blur(5px);
+    .bg-accent2-transparent {
+        background: rgba(124, 58, 237, 0.1);
+        border-left: 4px solid var(--accent2);
     }
 
-    .bg-gradient-tech {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle at top right, #7c3aed33, transparent),
-            radial-gradient(circle at bottom left, #00ff8811, transparent);
-        pointer-events: none;
+    .bg-dark-soft {
+        background: rgba(255, 255, 255, 0.03);
     }
 
     .font-orbitron {
         font-family: 'Orbitron', sans-serif;
     }
 
-    .letter-spacing-2 {
+    .ls-2 {
         letter-spacing: 2px;
     }
 
+    .smaller {
+        font-size: 0.75rem;
+    }
+
     .choice-btn {
-        background: #1e1b4b;
-        border: 2px solid rgba(124, 58, 237, 0.4);
-        color: white;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(124, 58, 237, 0.2);
+        color: var(--text-main);
         text-align: left;
         padding: 1.5rem;
-        border-radius: 18px;
+        border-radius: 15px;
         transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
-        font-weight: 600;
-        position: relative;
-        overflow: hidden;
+        font-weight: 500;
+        font-size: 1.1rem;
     }
 
     .choice-btn:hover {
-        background: var(--accent2);
-        border-color: #fff;
-        transform: scale(1.03) rotate(-1deg);
-        box-shadow: 0 10px 40px rgba(124, 58, 237, 0.5);
-    }
-
-    .choice-btn::after {
-        content: 'SELECT';
-        position: absolute;
-        right: 20px;
-        opacity: 0;
-        transition: 0.3s;
-        font-family: 'Orbitron';
-        font-size: 0.7rem;
-    }
-
-    .choice-btn:hover::after {
-        opacity: 0.8;
-    }
-
-    .unicorn-icon {
-        font-size: 8rem;
-        filter: drop-shadow(0 0 30px #7c3aed);
-    }
-
-    .reaction-text {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 8rem;
-        font-family: 'Orbitron';
-        font-weight: 900;
+        background: rgba(124, 58, 237, 0.15);
+        border-color: var(--accent2);
+        transform: translateX(10px);
         color: #fff;
-        text-shadow: 0 0 50px #7c3aed;
-        z-index: 9999;
-        pointer-events: none;
     }
 
-    .shimmer-text {
-        background: linear-gradient(92deg, #00ff88 0%, #fff 50%, #00ff88 100%);
-        background-size: 200% auto;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: shimmer 2s linear infinite;
+    .choice-btn.correct {
+        background: var(--accent) !important;
+        color: #000 !important;
+        font-weight: 700;
+        border-color: #fff !important;
     }
 
-    @keyframes shimmer {
-        to {
-            background-position: 200% center;
-        }
+    .choice-btn.wrong {
+        background: #ef4444 !important;
+        color: #fff;
+        border-color: #fff !important;
     }
 
     .trail-dot {
-        width: 12px;
-        height: 12px;
+        width: 10px;
+        height: 10px;
         border-radius: 50%;
         background: rgba(255, 255, 255, 0.1);
+        transition: 0.3s;
     }
 
     .trail-dot.active {
-        background: var(--accent) !important;
+        background: var(--accent);
         box-shadow: 0 0 10px var(--accent);
     }
 </style>
@@ -213,142 +146,135 @@
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <script>
-    let simData = {
-        valuation: 100000,
-        energy: 100,
-        currentStep: 0,
-        history: []
-    };
-
-    const storySteps = [
+    const trailData = [
         {
-            tag: "CONCEPÇÃO",
-            title: "MVP OU PERFEIÇÃO?",
-            desc: "Seu protótipo básico já funciona, mas não está bonito. O que você faz?",
-            choices: [
-                { text: "Lançar AGORA e coletar feedback real", impact: { v: 200000, e: -10, r: "BOOOM! FEEDBACK RÁPIDO!" }, next: 1 },
-                { text: "Passar 6 meses refinando o design", impact: { v: -50000, e: -30, r: "LENTO... MERCADO ESFRIOU!" }, next: 1 },
-                { text: "Tentar pivotar para outra ideia", impact: { v: 0, e: -5, r: "PIVOTANDO..." }, next: 0 }
-            ]
+            q: "Quem criou o primeiro computador eletromecânico do mundo?",
+            o: ["Alan Turing", "Steve Jobs", "Konrad Zuse", "Ada Lovelace"],
+            a: 2,
+            c: "Konrad Zuse construiu o Z3 em 1941. Ele é considerado o primeiro computador do mundo que era digital e programável!"
         },
         {
-            tag: "CRESCIMENTO",
-            title: "INVESTIMENTO ANJO",
-            desc: "Um grupo de investidores ofereceu 500k por 20% da sua empresa. Aceita?",
-            choices: [
-                { text: "ACEITAR: Dinheiro no caixa para escalar!", impact: { v: 500000, e: 20, r: "POOOOKER! CAIXA CHEIO!" }, next: 2 },
-                { text: "RECUSAR: Manter controle total e ir devagar", impact: { v: 50000, e: -40, r: "BOOTSTRAPPING!" }, next: 2 }
-            ]
+            q: "O que significa a sigla MVP no mundo do empreendedorismo?",
+            o: ["Most Valuable Player", "Minimum Viable Product", "Main Version Prototype", "Most Visible Product"],
+            a: 1,
+            c: "MVP é a versão mais simples de um produto para ser testada pelo mercado com o menor custo possível."
         },
         {
-            tag: "A ESCALA",
-            title: "VIRALIZOU! E AGORA?",
-            desc: "Seu servidor caiu devido ao excesso de acessos. O mercado está em pânico!",
-            choices: [
-                { text: "Virar a noite programando (HERÓI)", impact: { v: 1500000, e: -50, r: "GOD MODE!" }, next: 3 },
-                { text: "Delegar para uma consultoria cara", impact: { v: -200000, e: 10, r: "CUSTO ALTO!" }, next: 3 }
-            ]
+            q: "Qual dessas linguagens de programação é famosa por ser usada para ensinar lógica a crianças (blocos)?",
+            o: ["Python", "JavaScript", "Scratch", "C++"],
+            a: 2,
+            c: "O Scratch foi criado pelo MIT e revolucionou o ensino de lógica usando blocos de arrastar!"
         },
         {
-            tag: "DOMINAÇÃO",
-            title: "CONCORRENTE GIGANTE",
-            desc: "A Google anunciou um produto similar ao seu. Qual sua reação?",
-            choices: [
-                { text: "Anunciar parceria de integração", impact: { v: 500000000, e: 30, r: "M&A À VISTA!" }, next: 4 },
-                { text: "Processar por violação de patente", impact: { v: -10000000, e: -20, r: "TRETA JURÍDICA!" }, next: 4 }
-            ]
+            q: "A internet 'nasceu' de um projeto militar. Qual era o nome original dele?",
+            o: ["ARPANET", "WWW", "Intranet", "GoogleNet"],
+            a: 0,
+            c: "A ARPANET foi a rede criada pelo Departamento de Defesa dos EUA em 1969, base da internet que temos hoje."
+        },
+        {
+            q: "Qual empresa criou o sistema operacional Android em sua origem?",
+            o: ["Google", "Samsung", "Android Inc.", "Microsoft"],
+            a: 2,
+            c: "Embora hoje seja do Google, o Android começou em uma empresa independente chamada Android Inc. em 2003."
+        },
+        {
+            q: "No empreendedorismo, o que significa 'Pivotar'?",
+            o: ["Desistir do negócio", "Mudar drasticamente o foco da empresa", "Vender a empresa por milhões", "Contratar novos funcionários"],
+            a: 1,
+            c: "Pivotar é quando uma startup percebe que seu modelo atual não funciona e decide mudar de direção estratégica."
+        },
+        {
+            q: "O termo 'Bug' veio de um inseto real que entrou em um computador. Quem popularizou o termo?",
+            o: ["Bill Gates", "Grace Hopper", "Mark Zuckerberg", "Jeff Bezos"],
+            a: 1,
+            c: "Grace Hopper encontrou uma mariposa real (bug) causando falha em um computador Harvard Mark II em 1947!"
+        },
+        {
+            q: "Qual é a rede social que começou apenas para estudantes da universidade de Harvard?",
+            o: ["Instagram", "WhatsApp", "Facebook", "Twitter"],
+            a: 2,
+            c: "Mark Zuckerberg lançou 'TheFacebook' em 2004 para que estudantes pudessem se conectar inicialmente em Harvard."
         }
     ];
 
-    function logMarket(msg) {
-        const log = document.getElementById('market-log');
-        log.innerHTML = `> ${msg}<br>` + log.innerHTML;
-    }
+    let currentStep = 0;
+    let score = 0;
+    const sounds = {
+        correct: document.getElementById('snd-correct'),
+        wrong: document.getElementById('snd-wrong'),
+        step: document.getElementById('snd-step')
+    };
 
-    function showReaction(text) {
-        const overlay = document.getElementById('reaction-overlay');
-        overlay.innerText = text;
-        overlay.classList.remove('d-none', 'animate__zoomIn');
-        void overlay.offsetWidth; // trigger reflow
-        overlay.classList.add('animate__zoomIn');
-
-        setTimeout(() => { overlay.classList.add('d-none'); }, 1500);
-    }
-
-    function renderTrail() {
-        const trail = document.getElementById('trail-dots');
-        trail.innerHTML = '';
-        for (let i = 0; i < storySteps.length + 1; i++) {
+    function initTrail() {
+        const prog = document.getElementById('trail-prog');
+        prog.innerHTML = '';
+        trailData.forEach((_, i) => {
             const dot = document.createElement('div');
-            dot.className = `trail-dot ${i <= simData.currentStep ? 'active' : ''}`;
-            trail.appendChild(dot);
-        }
-    }
-
-    function renderStep() {
-        if (simData.currentStep >= storySteps.length) {
-            finishSim();
-            return;
-        }
-
-        renderTrail();
-        const step = storySteps[simData.currentStep];
-        document.getElementById('step-tag').innerText = `FASE ${simData.currentStep + 1}: ${step.tag}`;
-        document.getElementById('step-title').innerText = step.title;
-        document.getElementById('step-desc').innerText = step.desc;
-
-        const container = document.getElementById('choices-container');
-        container.innerHTML = '';
-
-        step.choices.forEach(c => {
-            const btn = document.createElement('button');
-            btn.className = 'choice-btn';
-            btn.innerHTML = `<i class="bi bi-rocket-takeoff me-2"></i> ${c.text}`;
-            btn.onclick = () => makeChoice(c);
-            container.appendChild(btn);
+            dot.className = `trail-dot ${i === 0 ? 'active' : ''}`;
+            prog.appendChild(dot);
         });
-    }
-
-    function makeChoice(choice) {
-        document.getElementById('snd-path').play();
-        simData.valuation += choice.impact.v;
-        simData.energy += choice.impact.e;
-        simData.currentStep = choice.next;
-
-        showReaction(choice.impact.r);
-        logMarket(`Decidido: ${choice.text}`);
-        logMarket(`Valuation agora em $${(simData.valuation / 1000000).toFixed(2)}M`);
-
-        // Update visual counters
-        updateVisuals();
-
-        if (simData.energy <= 0) {
-            alert("Burnout! Você faliu por falta de energia.");
-            window.location.reload();
-            return;
-        }
-
         renderStep();
     }
 
-    function updateVisuals() {
-        document.getElementById('val-badge').innerText = `Valuation: $${(simData.valuation / 1000000).toFixed(2)}M`;
-        document.getElementById('energy-badge').innerText = `Energia: ${simData.energy}%`;
-        document.getElementById('valuation-counter').innerText = simData.valuation.toLocaleString();
+    function renderStep() {
+        if (currentStep >= trailData.length) {
+            finishTrail();
+            return;
+        }
+
+        const data = trailData[currentStep];
+        document.getElementById('step-count').innerText = `QUESTÃO ${currentStep + 1} DE ${trailData.length}`;
+        document.getElementById('question-text').innerText = data.q;
+        document.getElementById('curiosity-text').innerText = data.c;
+        document.getElementById('curiosity-box').classList.remove('animate__lightSpeedInRight');
+        void document.getElementById('curiosity-box').offsetWidth;
+        document.getElementById('curiosity-box').classList.add('animate__lightSpeedInRight');
+
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
+
+        data.o.forEach((opt, i) => {
+            const col = document.createElement('div');
+            col.className = 'col-12';
+            col.innerHTML = `<button class="btn choice-btn w-100" onclick="checkChoice(this, ${i})">${opt}</button>`;
+            container.appendChild(col);
+        });
+
+        // Update dots
+        const dots = document.querySelectorAll('.trail-dot');
+        dots.forEach((d, i) => i <= currentStep ? d.classList.add('active') : d.classList.remove('active'));
     }
 
-    async function finishSim() {
-        document.getElementById('main-sim-screen').classList.add('d-none');
-        document.getElementById('sim-win-screen').classList.remove('d-none');
-        document.getElementById('snd-success').play();
+    function checkChoice(btn, idx) {
+        const correct = trailData[currentStep].a;
+        const btns = document.querySelectorAll('.choice-btn');
+        btns.forEach(b => b.style.pointerEvents = 'none');
 
-        confetti({ particleCount: 200, spread: 90, origin: { y: 0.6 } });
+        if (idx === correct) {
+            btn.classList.add('correct');
+            sounds.correct.play();
+            score += 20;
+            document.getElementById('points-badge').innerText = `XP: ${score}`;
+        } else {
+            btn.classList.add('wrong');
+            sounds.wrong.play();
+            btns[correct].classList.add('correct');
+        }
 
-        const xp = Math.floor(simData.valuation / 1000000) + 200;
-        const tc = Math.floor(xp / 5);
+        setTimeout(() => {
+            currentStep++;
+            sounds.step.play();
+            renderStep();
+        }, 1500);
+    }
 
-        document.getElementById('sim-xp').innerText = xp;
-        document.getElementById('sim-tc').innerText = tc;
+    async function finishTrail() {
+        document.getElementById('quiz-area').classList.add('d-none');
+        document.getElementById('conclusion-area').classList.remove('d-none');
+        confetti({ particleCount: 200, spread: 70, origin: { y: 0.6 } });
+
+        const tc = Math.floor(score / 5);
+        document.getElementById('final-xp').innerText = score;
 
         try {
             await fetch("{{ url_for('atividades.save_result') }}", {
@@ -356,14 +282,14 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     tipo: "empreendedorismo",
-                    xp: xp,
+                    xp: score,
                     teccoins: tc,
-                    obs: `Startuper Unicórnio! Valuation final: $${(simData.valuation / 1000000).toFixed(2)}M.`
+                    obs: `Trilha do Empreendedorismo concluída com ${score} de XP.`
                 })
             });
         } catch (e) { console.error(e); }
     }
 
-    renderStep();
+    initTrail();
 </script>
 {% endblock %}
