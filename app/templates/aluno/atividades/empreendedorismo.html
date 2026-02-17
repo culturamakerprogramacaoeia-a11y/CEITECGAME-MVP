@@ -6,14 +6,16 @@
 <audio id="snd-wrong" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3" preload="auto"></audio>
 <audio id="snd-step" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" preload="auto"></audio>
 
-<div class="container py-4">
+<div class="container py-2 py-md-4">
     <div id="game-container" class="card mx-auto shadow-2xl animate__animated animate__fadeIn"
-        style="max-width: 900px; border-radius: 30px; border: none; background: #060515; min-height: 650px;">
+        style="max-width: 900px; border-radius: 20px; border: none; background: #060515; min-height: 500px; width: 100%;">
 
         <!-- Header da Trilha -->
-        <div class="p-4 bg-dark-purple border-bottom border-accent2 d-flex justify-content-between align-items-center">
-            <div class="font-orbitron">
-                <h4 class="m-0 text-white">TRILHA DO <span class="text-accent2">EMPREENDEDORISMO DIGITAL</span></h4>
+        <div
+            class="p-3 p-md-4 bg-dark-purple border-bottom border-accent2 d-flex justify-content-between align-items-center">
+            <div class="font-orbitron" style="max-width: 70%;">
+                <h4 class="m-0 text-white" style="font-size: 0.9rem; line-height: 1.2;">TRILHA DO <span
+                        class="text-accent2">EMPREENDEDORISMO</span></h4>
                 <div class="d-flex gap-3 mt-1">
                     <span class="badge border border-success text-success" id="points-badge">XP: 0</span>
                     <span class="badge border border-info text-info" id="level-badge">LEVEL: 1</span>
@@ -144,8 +146,14 @@
 
     /* Responsividade */
     @media (max-width: 768px) {
+        #game-container {
+            border-radius: 15px !important;
+            min-height: 450px !important;
+        }
+
         #question-text {
-            font-size: 1.5rem !important;
+            font-size: 1.4rem !important;
+            margin-bottom: 1.5rem !important;
         }
 
         .choice-btn {
@@ -155,38 +163,50 @@
         }
 
         .display-4 {
-            font-size: 2.2rem;
+            font-size: 2rem;
         }
 
         .p-5 {
-            padding: 2rem !important;
+            padding: 1.5rem !important;
         }
 
         .font-orbitron h4 {
-            font-size: 0.9rem;
+            font-size: 0.8rem !important;
         }
 
         #curiosity-box {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            padding: 10px !important;
         }
     }
 
     @media (max-width: 480px) {
         #question-text {
-            font-size: 1.25rem !important;
+            font-size: 1.2rem !important;
+            line-height: 1.4;
         }
 
         .choice-btn {
             padding: 0.8rem;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
 
         .bg-dark-purple {
-            padding: 0.8rem !important;
+            padding: 0.75rem !important;
         }
 
         .badge {
-            font-size: 0.65rem;
+            font-size: 0.6rem !important;
+            padding: 0.3em 0.5em;
+        }
+
+        .display-1 {
+            font-size: 3rem !important;
+        }
+
+        .trail-dot {
+            width: 8px;
+            height: 8px;
         }
     }
 </style>
