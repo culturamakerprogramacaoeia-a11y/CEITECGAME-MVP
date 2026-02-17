@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+{% block title %}Matemática Tech - Desafio{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div id="game-container" class="card mx-auto" style="max-width: 800px; border-radius: 20px; overflow: hidden;">
+        <!-- Header do Jogo -->
+        <div class="card-header d-flex justify-content-between align-items-center py-3 bg-dark-custom">
+            <span class="badge rounded-pill bg-accent-glow" id="score-badge">XP: 0</span>
+            <h4 class="m-0 font-orbitron text-accent">MATEMÁTICA TECH</h4>
+            <span class="badge rounded-pill bg-purple-glow" id="timer-badge">Tempo: 45s</span>
+        </div>
+
+        <!-- Tela Principal -->
+        <div class="card-body p-5 text-center" id="play-screen">
+            <div id="progress-container" class="mb-4">
+                <div class="progress" style="height: 10px; background: rgba(255,255,255,0.1);">
+                    <div id="bar-progress" class="progress-bar bg-accent" role="progressbar" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <h2 id="question-text" class="mb-4" style="font-size: 3rem; font-weight: 700;">12 + 8 = ?</h2>
+
+            <div class="row g-3" id="options-container">
+                <!-- Botões de opções via JS -->
+            </div>
+        </div>
+
+        <!-- Tela de Resultado -->
+        <div class="card-body p-5 text-center d-none" id="result-screen">
+            <div class="animate__animated animate__zoomIn">
+                <i class="bi bi-trophy-fill text-accent" style="font-size: 5rem;"></i>
+                <h1 class="font-orbitron mt-3" id="result-title">PARABÉNS!</h1>
+                <p class="fs-4" id="result-message">Você completou o desafio de matemática.</p>
+                <div class="d-flex justify-content-center gap-4 my-4">
+                    <div class="stat-item">
+                        <span class="d-block text-muted">XP GANHO</span>
+                        <h2 class="text-accent" id="final-xp">0</h2>
+                    </div>
+                    <div class="stat-item">
+                        <span class="d-block text-muted">TECCOINS</span>
+                        <h2 class="text-warning" id="final-tc">0</h2>
+                    </div>
+                </div>
+                <button onclick="window.location.reload()" class="btn btn-outline-accent me-2">Tentar Novamente</button>
+                <a href="{{ url_for('atividades.menu') }}" class="btn btn-accent">Voltar ao Menu</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-dark-custom {
+        background: #0a081a !important;
+        border-bottom: 2px solid var(--border);
+    }
+
+    .font-orbitron {
+        font-family: 'Orbitron', sans-serif;
+        letter-spacing: 1px;
+    }
+
+    .bg-accent-glow {
+        background: var(--accent);
+        color: #000;
+        box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+        font-weight: 700;
+    }
+
+    .bg-purple-glow {
+        background: var(--accent2);
+        color: #fff;
+        box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);
+        font-weight: 700;
+    }
+
+    .option-btn {
+        background: rgba(124, 58, 237, 0.1);
+        border: 2px solid rgba(124, 58, 237, 0.3);
+        color: white;
+        padding: 1.5rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        border-radius: 15px;
+        transition: all 0.2s;
+    }
+
+    .option-btn:hover {
+        background: rgba(124, 58, 237, 0.3);
+        transform: scale(1.03);
+        border-color: var(--accent2);
+    }
+
+    .option-btn.correct {
+        background: var(--accent) !important;
+        color: #000 !important;
+        border-color: #fff !important;
+    }
+
+    .option-btn.wrong {
+        background: #ef4444 !important;
+        border-color: #fff !important;
+    }
+
+    .stat-item {
+        padding: 10px 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        min-width: 120px;
+    }
+</style>
+
+<script>
+    const questions = [
+        { q: "12 + 15", a: 27, o: [27, 25, 30, 28] },
+        { q: "8 x 7", a: 56, o: [54, 56, 64, 48] },
+        { q: "45 / 5", a: 9, o: [7, 8, 9, 11] },
+        { q: "2³ (Dois ao cubo)", a: 8, o: [6, 8, 4, 12] },
+        { q: "100 - 37", a: 63, o: [63, 73, 53, 67] },
+        { q: "15 x 3", a: 45, o: [35, 45, 55, 40] },
+        { q: "√64 (Raiz de 64)", a: 8, o: [6, 7, 8, 9] },
+        { q: "7 + 5 x 2", a: 17, o: [24, 17, 19, 14] },
+        { q: "25% de 200", a: 50, o: [25, 40, 50, 60] },
+        { q: "10² / 4", a: 25, o: [20, 25, 50, 40] }
+    ];
+
+    let currentIdx = 0;
+    let score = 0;
+    let timer = 45;
+    let gameInterval;
+    let isGameOver = false;
+
+    function startGame() {
+        renderQuestion();
+        gameInterval = setInterval(() => {
+            timer--;
+            document.getElementById('timer-badge').innerText = `Tempo: ${timer}s`;
+            if (timer <= 0) endGame();
+        }, 1000);
+    }
+
+    function renderQuestion() {
+        if (currentIdx >= questions.length) {
+            endGame();
+            return;
+        }
+
+        const q = questions[currentIdx];
+        document.getElementById('question-text').innerText = q.q + " = ?";
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
+
+        // Misturar opções
+        const options = [...q.o].sort(() => Math.random() - 0.5);
+
+        options.forEach(opt => {
+            const btn = document.createElement('div');
+            btn.className = 'col-6';
+            btn.innerHTML = `<button class="btn option-btn w-100" onclick="checkAnswer(this, ${opt})">${opt}</button>`;
+            container.appendChild(btn);
+        });
+
+        const progress = ((currentIdx) / questions.length) * 100;
+        document.getElementById('bar-progress').style.width = progress + "%";
+    }
+
+    function checkAnswer(btn, val) {
+        if (isGameOver) return;
+        const correct = questions[currentIdx].a;
+        const btns = document.querySelectorAll('.option-btn');
+        btns.forEach(b => b.style.pointerEvents = 'none');
+
+        if (val === correct) {
+            btn.classList.add('correct');
+            score += 10;
+            document.getElementById('score-badge').innerText = `XP: ${score}`;
+        } else {
+            btn.classList.add('wrong');
+            // Mostrar a correta
+            btns.forEach(b => {
+                if (parseInt(b.innerText) === correct) b.classList.add('correct');
+            });
+        }
+
+        setTimeout(() => {
+            currentIdx++;
+            renderQuestion();
+        }, 800);
+    }
+
+    async function endGame() {
+        isGameOver = true;
+        clearInterval(gameInterval);
+        document.getElementById('play-screen').classList.add('d-none');
+        document.getElementById('result-screen').classList.remove('d-none');
+
+        const tc = Math.floor(score / 5);
+        document.getElementById('final-xp').innerText = score;
+        document.getElementById('final-tc').innerText = tc;
+
+        // Salvar no Banco via API
+        try {
+            const response = await fetch("{{ url_for('atividades.save_result') }}", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    tipo: "matematica",
+                    xp: score,
+                    teccoins: tc,
+                    obs: `Fez ${score} pontos no desafio de Matemática Tech.`
+                })
+            });
+            const result = await response.json();
+            console.log("Salvo com sucesso!", result);
+        } catch (e) {
+            console.error("Erro ao salvar:", e);
+        }
+    }
+
+    startGame();
+</script>
+{% endblock %}

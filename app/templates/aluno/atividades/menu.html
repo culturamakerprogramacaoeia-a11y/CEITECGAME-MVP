@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block title %}CEITEC HUB - Atividades Interativas{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="text-center mb-5 animate__animated animate__fadeInDown">
+        <h1 class="page-title glow-text" style="font-size: 2.5rem;">
+            🎯 DESAFIOS INTERATIVOS
+        </h1>
+        <p class="text-muted">Aprenda jogando, suba de nível e ganhe prêmios reais!</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+        <!-- Matemática Card -->
+        <div class="col-12 col-md-5">
+            <div class="activity-card mat-card h-100 animate__animated animate__fadeInLeft">
+                <div class="activity-icon">
+                    <i class="bi bi-calculator"></i>
+                </div>
+                <h3>Matemática Tech</h3>
+                <p>Desafios lógicos e problemas rápidos para treinar seu raciocínio computacional.</p>
+                <div class="activity-stats">
+                    <span><i class="bi bi-lightning-fill"></i> até 100 XP</span>
+                    <span><i class="bi bi-coin"></i> até 20 TC</span>
+                </div>
+                <a href="{{ url_for('atividades.matematica') }}" class="btn btn-atv-play mt-3 w-100">
+                    JOGAR AGORA <i class="bi bi-controller ms-2"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Empreendedorismo Card -->
+        <div class="col-12 col-md-5">
+            <div class="activity-card emp-card h-100 animate__animated animate__fadeInRight">
+                <div class="activity-icon">
+                    <i class="bi bi-rocket-takeoff"></i>
+                </div>
+                <h3>Empreendedorismo Digital</h3>
+                <p>Simule sua própria startup! Tome decisões reais e veja seu negócio crescer.</p>
+                <div class="activity-stats">
+                    <span><i class="bi bi-star-fill"></i> Nível Pro</span>
+                    <span><i class="bi bi-graph-up-arrow"></i> Badges Exclusivos</span>
+                </div>
+                <a href="{{ url_for('atividades.empreendedorismo') }}" class="btn btn-atv-play mt-3 w-100">
+                    LANÇAR STARTUP <i class="bi bi-rocket-fill ms-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .activity-card {
+        background: rgba(30, 27, 75, 0.7);
+        border: 2px solid rgba(0, 255, 136, 0.2);
+        border-radius: 20px;
+        padding: 2.5rem;
+        text-align: center;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+    }
+
+    .activity-card::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(0, 255, 136, 0.1) 0%, transparent 70%);
+        pointer-events: none;
+    }
+
+    .activity-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 15px 45px rgba(0, 255, 136, 0.15);
+        border-color: var(--accent);
+    }
+
+    .mat-card {
+        border-bottom: 5px solid var(--accent);
+    }
+
+    .emp-card {
+        border-bottom: 5px solid var(--accent2);
+    }
+
+    .activity-icon {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.3));
+    }
+
+    .activity-card h3 {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: #fff;
+    }
+
+    .activity-stats {
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+        font-weight: 600;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+    .activity-stats i {
+        color: var(--accent);
+    }
+
+    .btn-atv-play {
+        background: linear-gradient(90deg, var(--accent2) 0%, #a855f7 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 1rem;
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+        letter-spacing: 1px;
+        transition: all 0.2s;
+        box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+    }
+
+    .btn-atv-play:hover {
+        background: linear-gradient(90deg, #a855f7 0%, var(--accent2) 100%);
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
+        color: white;
+    }
+</style>
+{% endblock %}

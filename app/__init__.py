@@ -25,10 +25,12 @@ def create_app():
     from .routes.auth import auth_bp
     from .routes.professor import professor_bp
     from .routes.aluno import aluno_bp
+    from .routes.atividades import atividades_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(professor_bp, url_prefix='/professor')
     app.register_blueprint(aluno_bp, url_prefix='/aluno')
+    app.register_blueprint(atividades_bp, url_prefix='/aluno/atividades')
 
     return app
 

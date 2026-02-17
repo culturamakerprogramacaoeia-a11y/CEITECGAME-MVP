@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+{% block title %}CEITEC HUB - Empreendedorismo Digital{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div id="sim-container" class="card mx-auto shadow-lg"
+        style="max-width: 900px; background: #131130; border: none; border-radius: 25px;">
+        <div class="card-header border-0 bg-transparent py-4 text-center">
+            <h2 class="font-orbitron"
+                style="background: linear-gradient(90deg, #00ff88, #7c3aed); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+                🚀 STARTUP SIMULATOR</h2>
+            <div class="d-flex justify-content-center gap-3 mt-2">
+                <span class="badge bg-dark border border-success text-success" id="balance-badge">Caixa: $1000</span>
+                <span class="badge bg-dark border border-primary text-primary" id="reputation-badge">Reputação: 0</span>
+            </div>
+        </div>
+
+        <div class="card-body p-4" id="main-sim-screen">
+            <div class="row g-4">
+                <div class="col-md-5">
+                    <img id="step-image"
+                        src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
+                        class="img-fluid rounded-4 shadow-lg border-2 border-accent" alt="Cenário">
+                </div>
+                <div class="col-md-7 d-flex flex-column justify-content-center">
+                    <h4 id="step-title" class="text-white mb-3">Sua jornada começa agora!</h4>
+                    <p id="step-desc" class="text-muted fs-5 mb-4">
+                        Você tem uma ideia incrível para um aplicativo de estudo gamificado.
+                        Qual é o seu primeiro passo para tirar a ideia do papel?
+                    </p>
+                    <div id="choices-container" class="d-grid gap-3">
+                        <!-- Botões de escolha via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela de Conclusão -->
+        <div class="card-body p-5 text-center d-none" id="sim-result-screen">
+            <div class="animate__animated animate__bounceIn">
+                <div class="display-1 mb-3">🏆</div>
+                <h1 class="font-orbitron text-accent" id="sim-status-title">STARTUP LANÇADA!</h1>
+                <p class="fs-4 text-muted" id="sim-final-desc">O mercado recebeu sua ideia... vamos ver os resultados!
+                </p>
+
+                <div class="row g-4 my-5 justify-content-center">
+                    <div class="col-4">
+                        <div class="p-3 bg-dark-soft rounded-4">
+                            <h3 id="sim-xp" class="text-accent mb-0">0</h3>
+                            <small class="text-muted">XP ADQUIRIDO</small>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="p-3 bg-dark-soft rounded-4">
+                            <h3 id="sim-tc" class="text-warning mb-0">0</h3>
+                            <small class="text-muted">TECCOINS</small>
+                        </div>
+                    </div>
+                </div>
+
+                <a href="{{ url_for('atividades.menu') }}" class="btn btn-atv-play px-5">VOLTAR AO HUB</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .font-orbitron {
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 700;
+    }
+
+    .bg-dark-soft {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .choice-btn {
+        background: #1e1b4b;
+        border: 1px solid rgba(0, 255, 136, 0.2);
+        color: white;
+        text-align: left;
+        padding: 1.2rem;
+        border-radius: 15px;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .choice-btn:hover {
+        background: rgba(0, 255, 136, 0.1);
+        border-color: var(--accent);
+        transform: translateX(10px);
+    }
+
+    #step-image {
+        transition: all 0.5s ease;
+        height: 250px;
+        object-fit: cover;
+    }
+</style>
+
+<script>
+    let simData = {
+        balance: 1000,
+        reputation: 0,
+        currentStep: 0,
+        history: []
+    };
+
+    const storySteps = [
+        {
+            title: "O Ponto de Partida",
+            desc: "Como você vai começar seu projeto de Empreendedorismo Digital?",
+            choices: [
+                { text: "Focar 100% no design (UX/UI)", impact: { b: -300, r: 20 }, next: 1 },
+                { text: "Entrevistar possíveis usuários", impact: { b: -50, r: 40 }, next: 1 },
+                { text: "Contratar programadores caros", impact: { b: -800, r: 10 }, next: 1 }
+            ],
+            img: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=500"
+        },
+        {
+            title: "O Primeiro Protótipo",
+            desc: "Seu protótipo está pronto! Onde você vai testar?",
+            choices: [
+                { text: "Postar nas redes sociais", impact: { b: 0, r: 15 }, next: 2 },
+                { text: "Fazer um evento de lançamento", impact: { b: -400, r: 50 }, next: 2 },
+                { text: "Pedir feedback para mentores", impact: { b: -100, r: 35 }, next: 2 }
+            ],
+            img: "https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=500"
+        },
+        {
+            title: "Hora de Escalar",
+            desc: "Sua base de usuários cresceu. Qual a prioridade agora?",
+            choices: [
+                { text: "Investir em Marketing Pesado", impact: { b: -500, r: 60 }, next: 3 },
+                { text: "Melhorar a Velocidade do App", impact: { b: -200, r: 30 }, next: 3 },
+                { text: "Vender o negócio para um investidor", impact: { b: 1500, r: -20 }, next: 3 }
+            ],
+            img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=500"
+        }
+    ];
+
+    function updateHeader() {
+        document.getElementById('balance-badge').innerText = `Caixa: $${simData.balance}`;
+        document.getElementById('reputation-badge').innerText = `Reputação: ${simData.reputation}`;
+    }
+
+    function renderStep() {
+        if (simData.currentStep >= storySteps.length) {
+            finishSim();
+            return;
+        }
+
+        const step = storySteps[simData.currentStep];
+        document.getElementById('step-title').innerText = step.title;
+        document.getElementById('step-desc').innerText = step.desc;
+        document.getElementById('step-image').src = step.img;
+
+        const container = document.getElementById('choices-container');
+        container.innerHTML = '';
+
+        step.choices.forEach(c => {
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.innerHTML = `<i class="bi bi-chevron-right me-2 text-accent"></i> ${c.text}`;
+            btn.onclick = () => makeChoice(c);
+            container.appendChild(btn);
+        });
+    }
+
+    function makeChoice(choice) {
+        simData.balance += choice.impact.b;
+        simData.reputation += choice.impact.r;
+        simData.currentStep = choice.next;
+        updateHeader();
+        renderStep();
+    }
+
+    async function finishSim() {
+        document.getElementById('main-sim-screen').classList.add('d-none');
+        document.getElementById('sim-result-screen').classList.remove('d-none');
+
+        // Cálculo final de Pontos
+        const baseXP = 150;
+        const repBonus = simData.reputation * 2;
+        const balBonus = simData.balance > 0 ? 50 : 0;
+
+        const totalXP = baseXP + repBonus + balBonus;
+        const totalTC = Math.floor(totalXP / 8);
+
+        document.getElementById('sim-xp').innerText = totalXP;
+        document.getElementById('sim-tc').innerText = totalTC;
+
+        if (simData.balance < 0) {
+            document.getElementById('sim-status-title').innerText = "VAI QUE DÁ!";
+            document.getElementById('sim-status-title').classList.replace('text-accent', 'text-warning');
+            document.getElementById('sim-final-desc').innerText = "Sua startup faliu em dinheiro, mas você ganhou muita experiência!";
+        }
+
+        // Salvar via API
+        try {
+            await fetch("{{ url_for('atividades.save_result') }}", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    tipo: "empreendedorismo",
+                    xp: totalXP,
+                    teccoins: totalTC,
+                    obs: `Simulação de Startup concluída. Reputação: ${simData.reputation}, Saldo: ${simData.balance}.`
+                })
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    renderStep();
+</script>
+{% endblock %}
