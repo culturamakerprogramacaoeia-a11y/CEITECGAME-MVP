@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Histórico de Pontuações{% endblock %}
+
+{% block content %}
+<div class="page-title glow-text">
+  <i class="bi bi-clock-history"></i> HISTÓRICO COMPLETO
+</div>
+
+{% if pontuacoes %}
+<div class="card">
+  <div class="card-body p-0">
+    <table class="table-dark-custom w-100">
+      <thead>
+        <tr>
+          <th>MISSÃO</th>
+          <th>CATEGORIA</th>
+          <th>XP</th>
+          <th>TECCOINS</th>
+          <th>OBSERVAÇÃO</th>
+          <th>DATA</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in pontuacoes %}
+        <tr>
+          <td><strong>{{ p.missao.titulo }}</strong></td>
+          <td style="color:var(--text-muted);">{{ p.missao.categoria }}</td>
+          <td><span class="xp-badge">+{{ p.xp_recebido }}</span></td>
+          <td><span class="tc-badge">+{{ p.teccoins_recebido }}</span></td>
+          <td style="color:var(--text-muted); font-size:0.85rem;">
+            {{ p.obs if p.obs else '—' }}
+          </td>
+          <td style="color:var(--text-muted); font-size:0.85rem;">
+            {{ p.data.strftime('%d/%m/%Y %H:%M') }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer" style="background:var(--bg-card2); border-top:1px solid var(--border);">
+    <span class="xp-badge">Total: {{ pontuacoes|sum(attribute='xp_recebido') }} XP</span>
+    &nbsp;·&nbsp;
+    <span class="tc-badge">🪙 {{ pontuacoes|sum(attribute='teccoins_recebido') }} TecCoins ganhas</span>
+  </div>
+</div>
+{% else %}
+<div class="card">
+  <div class="card-body text-center py-5" style="color:var(--text-muted);">
+    <i class="bi bi-inbox" style="font-size:3rem; color:var(--accent2);"></i>
+    <p class="mt-2">Nenhuma pontuação registrada ainda.</p>
+    <p style="font-size:0.85rem;">Peça ao professor para lançar suas primeiras pontuações!</p>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

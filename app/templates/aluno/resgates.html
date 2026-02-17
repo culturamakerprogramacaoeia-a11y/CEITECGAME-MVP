@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Meus Resgates - CEITECGAME{% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-12">
+        <h1 class="page-title">
+            <i class="bi bi-gift"></i> Meus Resgates
+        </h1>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        {% if resgates %}
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Recompensa</th>
+                                <th>Custo</th>
+                                <th>Data do Pedido</th>
+                                <th>Status</th>
+                                <th>Observação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for resgate in resgates %}
+                            <tr>
+                                <td>{{ resgate.recompensa.nome }}</td>
+                                <td>{{ resgate.recompensa.custo_teccoins }} TC</td>
+                                <td>{{ resgate.data.strftime('%d/%m/%Y %H:%M') }}</td>
+                                <td>
+                                    {% if resgate.status == 'pendente' %}
+                                    <span class="badge bg-warning">
+                                        <i class="bi bi-clock"></i> Pendente
+                                    </span>
+                                    {% elif resgate.status == 'aprovado' %}
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-check-circle"></i> Aprovado
+                                    </span>
+                                    {% else %}
+                                    <span class="badge bg-danger">
+                                        <i class="bi bi-x-circle"></i> Rejeitado
+                                    </span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if resgate.observacao %}
+                                    {{ resgate.observacao }}
+                                    {% else %}
+                                    <span class="text-muted">-</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="card">
+            <div class="card-body text-center py-5">
+                <i class="bi bi-inbox display-1 text-muted"></i>
+                <h4 class="mt-3">Nenhum resgate ainda</h4>
+                <p class="text-muted">Visite a loja para resgatar recompensas!</p>
+                <a href="{{ url_for('aluno.loja') }}" class="btn btn-primary">
+                    <i class="bi bi-shop"></i> Ir para Loja
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

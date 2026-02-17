@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Ranking{% endblock %}
+
+{% block content %}
+<div class="page-title glow-text">
+  <i class="bi bi-bar-chart-fill"></i> RANKING GERAL
+</div>
+
+{% if ranking %}
+<div class="card">
+  <div class="card-body p-0">
+    <table class="table-dark-custom w-100">
+      <thead>
+        <tr>
+          <th style="width:60px;">#</th>
+          <th>ALUNO</th>
+          <th>TURMA</th>
+          <th>NÍVEL</th>
+          <th>XP TOTAL</th>
+          <th>TECCOINS</th>
+          <th>PONTUAÇÕES</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for aluno in ranking %}
+        <tr {% if aluno.id == current_user.id %}style="background:rgba(0,255,136,0.05);"{% endif %}>
+          <td style="text-align:center; font-family:'Orbitron',sans-serif; font-size:1rem;">
+            {% if loop.index == 1 %}<span class="rank-1">🥇</span>
+            {% elif loop.index == 2 %}<span class="rank-2">🥈</span>
+            {% elif loop.index == 3 %}<span class="rank-3">🥉</span>
+            {% else %}<span style="color:var(--text-muted);">{{ loop.index }}</span>
+            {% endif %}
+          </td>
+          <td>
+            <strong>{{ aluno.nome }}</strong>
+          </td>
+          <td style="color:var(--text-muted);">
+            {{ aluno.turma.nome if aluno.turma else '—' }}
+          </td>
+          <td>
+            <span class="badge-nivel nivel-{{ aluno.nivel }}">{{ aluno.nivel }}</span>
+          </td>
+          <td>
+            <span class="xp-badge" style="font-size:1.05rem;">⚡ {{ aluno.xp_total }}</span>
+          </td>
+          <td>
+            <span class="tc-badge">🪙 {{ aluno.teccoins_total }}</span>
+          </td>
+          <td style="color:var(--text-muted);">
+            {{ aluno.pontuacoes | length }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="card">
+  <div class="card-body text-center py-5" style="color:var(--text-muted);">
+    <i class="bi bi-bar-chart" style="font-size:3rem; color:var(--accent2);"></i>
+    <p class="mt-2">Nenhum aluno cadastrado ainda.</p>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

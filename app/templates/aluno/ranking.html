@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Ranking da Turma{% endblock %}
+
+{% block content %}
+<div class="page-title glow-text">
+  <i class="bi bi-bar-chart-fill"></i> RANKING DA TURMA
+</div>
+
+{% if ranking %}
+<div class="card">
+  <div class="card-body p-0">
+    <table class="table-dark-custom w-100">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>ALUNO</th>
+          <th>NÍVEL</th>
+          <th>XP</th>
+          <th>TECCOINS</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in ranking %}
+        <tr {% if a.id == current_user.id %}style="background:rgba(0,255,136,0.07);"{% endif %}>
+          <td style="text-align:center; font-family:'Orbitron',sans-serif;">
+            {% if loop.index == 1 %}<span class="rank-1">🥇</span>
+            {% elif loop.index == 2 %}<span class="rank-2">🥈</span>
+            {% elif loop.index == 3 %}<span class="rank-3">🥉</span>
+            {% else %}<span style="color:var(--text-muted);">{{ loop.index }}</span>
+            {% endif %}
+          </td>
+          <td>
+            <strong>{{ a.nome }}</strong>
+            {% if a.id == current_user.id %}
+            <span style="color:var(--accent); font-size:0.75rem;"> ← você</span>
+            {% endif %}
+          </td>
+          <td><span class="badge-nivel nivel-{{ a.nivel }}">{{ a.nivel }}</span></td>
+          <td><span class="xp-badge">⚡ {{ a.xp_total }}</span></td>
+          <td><span class="tc-badge">🪙 {{ a.teccoins_total }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="card">
+  <div class="card-body text-center py-5" style="color:var(--text-muted);">
+    <i class="bi bi-bar-chart" style="font-size:3rem; color:var(--accent2);"></i>
+    <p class="mt-2">Nenhum dado de ranking disponível.</p>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

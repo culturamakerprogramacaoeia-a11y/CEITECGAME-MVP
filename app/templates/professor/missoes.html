@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Missões{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div class="page-title glow-text mb-0">
+    <i class="bi bi-trophy-fill"></i> MISSÕES
+  </div>
+  <a href="{{ url_for('professor.criar_missao') }}" class="btn btn-accent">
+    <i class="bi bi-plus-circle-fill"></i> Nova Missão
+  </a>
+</div>
+
+{% if missoes %}
+<div class="card">
+  <div class="card-body p-0">
+    <table class="table-dark-custom w-100">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>TÍTULO</th>
+          <th>CATEGORIA</th>
+          <th>XP</th>
+          <th>TECCOINS</th>
+          <th>AÇÕES</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in missoes %}
+        <tr>
+          <td style="color:var(--text-muted);">{{ m.id }}</td>
+          <td>
+            <strong>{{ m.titulo }}</strong>
+            {% if m.descricao %}
+            <br><small style="color:var(--text-muted);">{{ m.descricao[:60] }}{% if m.descricao|length > 60 %}…{% endif %}</small>
+            {% endif %}
+          </td>
+          <td>
+            {% set cat_colors = {
+              'Programação': '#60a5fa',
+              'Arduino': '#4ade80',
+              'Maker': '#fbbf24',
+              'Pensamento Computacional': '#c084fc'
+            } %}
+            <span style="color: {{ cat_colors.get(m.categoria, '#94a3b8') }}; font-weight:600;">
+              {{ m.categoria }}
+            </span>
+          </td>
+          <td><span class="xp-badge">⚡ {{ m.xp }} XP</span></td>
+          <td><span class="tc-badge">🪙 {{ m.teccoins }}</span></td>
+          <td>
+            <form method="POST"
+                  action="{{ url_for('professor.excluir_missao', missao_id=m.id) }}"
+                  style="display:inline;"
+                  onsubmit="return confirm('Excluir a missão {{ m.titulo }}?')">
+              <button class="btn btn-sm" style="background:rgba(239,68,68,0.15); color:#f87171; border:1px solid rgba(239,68,68,0.3);">
+                <i class="bi bi-trash"></i>
+              </button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="card">
+  <div class="card-body text-center py-5" style="color:var(--text-muted);">
+    <i class="bi bi-trophy" style="font-size:3rem; color:var(--accent2);"></i>
+    <p class="mt-2">Nenhuma missão cadastrada ainda.</p>
+    <a href="{{ url_for('professor.criar_missao') }}" class="btn btn-accent">
+      Criar primeira missão
+    </a>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

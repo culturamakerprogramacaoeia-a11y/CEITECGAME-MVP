@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% block title %}Dashboard – Professor{% endblock %}
+
+{% block content %}
+<div class="page-title glow-text">
+  <i class="bi bi-speedometer2"></i> PAINEL DO PROFESSOR
+</div>
+
+<!-- Estatísticas rápidas -->
+<div class="row g-3 mb-4">
+  <div class="col-6 col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon" style="color:#60a5fa;">
+        <i class="bi bi-people-fill"></i>
+      </div>
+      <div class="stat-value">{{ total_alunos }}</div>
+      <div class="stat-label">Alunos</div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon" style="color:#fbbf24;">
+        <i class="bi bi-trophy-fill"></i>
+      </div>
+      <div class="stat-value">{{ total_missoes }}</div>
+      <div class="stat-label">Missões</div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon" style="color:var(--accent);">
+        <i class="bi bi-lightning-fill"></i>
+      </div>
+      <div class="stat-value">{{ total_pontuacoes }}</div>
+      <div class="stat-label">Pontuações</div>
+    </div>
+  </div>
+  <div class="col-6 col-md-3">
+    <div class="stat-card">
+      <div class="stat-icon" style="color:#f87171;">
+        <i class="bi bi-hourglass-split"></i>
+      </div>
+      <div class="stat-value">{{ resgates_pendentes }}</div>
+      <div class="stat-label">Resgates Pendentes</div>
+    </div>
+  </div>
+</div>
+
+<!-- Ações rápidas -->
+<div class="row g-3 mb-4">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">
+        <i class="bi bi-lightning-charge"></i> AÇÕES RÁPIDAS
+      </div>
+      <div class="card-body d-flex flex-wrap gap-2 p-3">
+        <a href="{{ url_for('professor.lancar_pontuacao') }}" class="btn btn-accent">
+          <i class="bi bi-plus-circle-fill"></i> Lançar Pontuação
+        </a>
+        <a href="{{ url_for('professor.criar_missao') }}" class="btn btn-purple">
+          <i class="bi bi-trophy-fill"></i> Nova Missão
+        </a>
+        <a href="{{ url_for('professor.criar_aluno') }}" class="btn btn-outline-accent">
+          <i class="bi bi-person-plus"></i> Cadastrar Aluno
+        </a>
+        <a href="{{ url_for('professor.gerenciar_resgates') }}" class="btn btn-outline-accent">
+          <i class="bi bi-bag-check"></i> Ver Resgates
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Top 5 Ranking -->
+<div class="row g-3">
+  <div class="col-12 col-lg-8">
+    <div class="card h-100">
+      <div class="card-header">
+        <i class="bi bi-bar-chart-fill"></i> TOP 5 – RANKING GERAL
+      </div>
+      <div class="card-body p-0">
+        {% if ranking %}
+        <table class="table-dark-custom w-100">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>ALUNO</th>
+              <th>NÍVEL</th>
+              <th>XP</th>
+              <th>TECCOINS</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for aluno in ranking %}
+            <tr>
+              <td>
+                {% if loop.index == 1 %}<span class="rank-1">🥇</span>
+                {% elif loop.index == 2 %}<span class="rank-2">🥈</span>
+                {% elif loop.index == 3 %}<span class="rank-3">🥉</span>
+                {% else %}<span style="color:var(--text-muted);">{{ loop.index }}</span>
+                {% endif %}
+              </td>
+              <td><strong>{{ aluno.nome }}</strong></td>
+              <td>
+                <span class="badge-nivel nivel-{{ aluno.nivel }}">{{ aluno.nivel }}</span>
+              </td>
+              <td><span class="xp-badge">{{ aluno.xp_total }} XP</span></td>
+              <td><span class="tc-badge">🪙 {{ aluno.teccoins_total }}</span></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+        <div class="p-3 text-center" style="color:var(--text-muted);">
+          Nenhum aluno cadastrado ainda.
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Info lado direito -->
+  <div class="col-12 col-lg-4">
+    <div class="card mb-3">
+      <div class="card-header">
+        <i class="bi bi-map"></i> TABELA DE NÍVEIS
+      </div>
+      <div class="card-body p-3">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="badge-nivel nivel-Explorador">Explorador</span>
+          <small style="color:var(--text-muted);">0 – 100 XP</small>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="badge-nivel nivel-Programador">Programador</span>
+          <small style="color:var(--text-muted);">101 – 300 XP</small>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="badge-nivel nivel-Maker">Maker</span>
+          <small style="color:var(--text-muted);">301 – 600 XP</small>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="badge-nivel nivel-Engenheiro">Engenheiro</span>
+          <small style="color:var(--text-muted);">601 – 1000 XP</small>
+        </div>
+        <div class="d-flex justify-content-between align-items-center">
+          <span class="badge-nivel nivel-Mentor">Mentor</span>
+          <small style="color:var(--text-muted);">1000+ XP</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <i class="bi bi-person-badge"></i> SUA CONTA
+      </div>
+      <div class="card-body p-3">
+        <p class="mb-1"><strong>{{ current_user.nome }}</strong></p>
+        <p class="mb-0" style="color:var(--accent2); font-size:0.85rem;">
+          <i class="bi bi-shield-check"></i> 
+          {{ current_user.tipo | capitalize }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

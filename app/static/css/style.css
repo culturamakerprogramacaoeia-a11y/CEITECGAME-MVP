@@ -1,0 +1,437 @@
+/* ============================================
+   CEITECGAME - Custom Styles
+   Tema: Roxo Escuro + Verde Tech
+   ============================================ */
+
+/* === VARIÁVEIS DE CORES === */
+:root {
+    --primary-dark: #1e1b4b;
+    --primary-darker: #0f0e1f;
+    --tech-green: #00ff88;
+    --tech-green-dark: #00cc6a;
+    --card-bg: #252340;
+    --text-light: #ffffff;
+    --text-muted: #a0a0b0;
+    --border-color: #3a3760;
+}
+
+/* === ESTILOS GLOBAIS === */
+body {
+    background: linear-gradient(135deg, var(--primary-darker) 0%, var(--primary-dark) 100%);
+    min-height: 100vh;
+    color: var(--text-light);
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* === NAVBAR === */
+.navbar-dark {
+    background: var(--primary-dark) !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--tech-green) !important;
+}
+
+.navbar-brand:hover {
+    color: var(--tech-green-dark) !important;
+}
+
+.nav-link {
+    color: var(--text-light) !important;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--tech-green) !important;
+    transform: translateY(-2px);
+}
+
+/* === MAIN CONTENT === */
+.main-content {
+    padding-top: 80px;
+    min-height: calc(100vh - 60px);
+}
+
+/* === CARDS === */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    color: var(--text-light);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 255, 136, 0.2);
+}
+
+.card-header {
+    background: rgba(0, 255, 136, 0.1);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-light);
+}
+
+/* === TÍTULOS === */
+.page-title {
+    color: var(--tech-green);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-light);
+}
+
+/* === BOTÕES === */
+.btn-primary {
+    background: linear-gradient(135deg, var(--tech-green) 0%, var(--tech-green-dark) 100%);
+    border: none;
+    color: var(--primary-darker);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--tech-green-dark) 0%, var(--tech-green) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 255, 136, 0.4);
+}
+
+.btn-secondary {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-light);
+}
+
+.btn-secondary:hover {
+    background: var(--border-color);
+    border-color: var(--tech-green);
+}
+
+/* === BADGES DE NÍVEIS === */
+.badge {
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    border-radius: 20px;
+}
+
+.badge-lg {
+    font-size: 1.2rem;
+    padding: 0.75rem 1.5rem;
+}
+
+.badge-explorador {
+    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+    color: white;
+}
+
+.badge-programador {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+}
+
+.badge-maker {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    color: white;
+}
+
+.badge-engenheiro {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: white;
+}
+
+.badge-mentor {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: white;
+}
+
+/* === CARDS DE ESTATÍSTICAS === */
+.stat-card {
+    background: var(--card-bg);
+    border-left: 4px solid var(--tech-green);
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 255, 136, 0.3);
+}
+
+.stat-card-primary {
+    border-left-color: #3b82f6;
+}
+
+.stat-card-success {
+    border-left-color: var(--tech-green);
+}
+
+.stat-card-warning {
+    border-left-color: #f59e0b;
+}
+
+.stat-card-info {
+    border-left-color: #8b5cf6;
+}
+
+.stat-icon {
+    font-size: 3rem;
+    opacity: 0.3;
+}
+
+/* === CARDS DE AÇÃO === */
+.action-card {
+    text-decoration: none;
+    color: var(--text-light);
+    transition: all 0.3s ease;
+}
+
+.action-card:hover {
+    color: var(--text-light);
+    border-color: var(--tech-green);
+}
+
+/* === TABELAS === */
+.table {
+    color: var(--text-light);
+}
+
+.table thead {
+    background: rgba(0, 255, 136, 0.1);
+    border-bottom: 2px solid var(--tech-green);
+}
+
+.table-hover tbody tr:hover {
+    background: rgba(0, 255, 136, 0.05);
+}
+
+.table-active {
+    background: rgba(0, 255, 136, 0.15) !important;
+    border-left: 3px solid var(--tech-green);
+}
+
+/* === RANKING === */
+.ranking-table .rank-position {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--tech-green);
+}
+
+.text-bronze {
+    color: #cd7f32;
+}
+
+/* === FORMULÁRIOS === */
+.form-control,
+.form-select {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-light);
+}
+
+.form-control:focus,
+.form-select:focus {
+    background: var(--card-bg);
+    border-color: var(--tech-green);
+    color: var(--text-light);
+    box-shadow: 0 0 0 0.2rem rgba(0, 255, 136, 0.25);
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
+.form-label {
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+/* === LOGIN === */
+.login-container {
+    background: linear-gradient(135deg, var(--primary-darker) 0%, var(--primary-dark) 100%);
+    min-height: 100vh;
+}
+
+.login-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+}
+
+.text-tech {
+    color: var(--tech-green);
+}
+
+/* === PROGRESS BAR === */
+.progress {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+}
+
+.bg-tech {
+    background: linear-gradient(90deg, var(--tech-green) 0%, var(--tech-green-dark) 100%) !important;
+}
+
+/* === TIMELINE (Histórico) === */
+.timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--tech-green);
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -35px;
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--tech-green);
+    border: 3px solid var(--card-bg);
+}
+
+.timeline-content {
+    background: rgba(0, 255, 136, 0.05);
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 3px solid var(--tech-green);
+}
+
+/* === CARDS DE MISSÃO === */
+.mission-card {
+    border-left: 4px solid var(--tech-green);
+}
+
+.mission-card:hover {
+    border-left-color: var(--tech-green-dark);
+}
+
+/* === CARDS DE RECOMPENSA === */
+.reward-card {
+    border-top: 4px solid var(--tech-green);
+}
+
+.reward-card:hover {
+    border-top-color: var(--tech-green-dark);
+}
+
+/* === FOOTER === */
+.footer {
+    background: var(--primary-dark);
+    border-top: 1px solid var(--border-color);
+}
+
+/* === ALERTAS === */
+.alert {
+    border-radius: 8px;
+    border: none;
+}
+
+.alert-success {
+    background: rgba(0, 255, 136, 0.2);
+    color: var(--tech-green);
+}
+
+.alert-danger {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+.alert-warning {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+}
+
+.alert-info {
+    background: rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
+}
+
+/* === DROPDOWN === */
+.dropdown-menu {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+}
+
+.dropdown-item {
+    color: var(--text-light);
+}
+
+.dropdown-item:hover {
+    background: rgba(0, 255, 136, 0.1);
+    color: var(--tech-green);
+}
+
+/* === RESPONSIVIDADE === */
+@media (max-width: 768px) {
+    .main-content {
+        padding-top: 70px;
+    }
+    
+    .stat-card {
+        margin-bottom: 1rem;
+    }
+    
+    .page-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* === ANIMAÇÕES === */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* === UTILITÁRIOS === */
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+.bg-dark {
+    background-color: var(--primary-dark) !important;
+}
+
+/* === STAT CARDS DO ALUNO === */
+.stat-card-aluno {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.stat-card-aluno:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 255, 136, 0.3);
+}
+
+.nivel-badge-large {
+    margin: 0 auto;
+}

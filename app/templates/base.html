@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}CEITECGAME{% endblock %}</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #0d0b1e;
+      --bg-card: #1e1b4b;
+      --bg-card2: #2d2a6e;
+      --accent: #00ff88;
+      --accent2: #7c3aed;
+      --accent3: #06b6d4;
+      --text-main: #e2e8f0;
+      --text-muted: #94a3b8;
+      --border: rgba(0, 255, 136, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1rem;
+      min-height: 100vh;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent2);
+      border-radius: 3px;
+    }
+
+    /* ── Navbar ── */
+    .navbar {
+      background: linear-gradient(135deg, #0d0b1e 0%, #1e1b4b 100%) !important;
+      border-bottom: 1px solid var(--border);
+      padding: 0.6rem 1.5rem;
+    }
+
+    .navbar-brand {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: 1.4rem;
+      color: var(--accent) !important;
+      letter-spacing: 2px;
+      text-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+    }
+
+    .navbar-brand span {
+      color: var(--accent2);
+    }
+
+    .nav-link {
+      color: var(--text-muted) !important;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--accent) !important;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text-main);
+    }
+
+    .card-header {
+      background: var(--bg-card2);
+      border-bottom: 1px solid var(--border);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      color: var(--accent);
+    }
+
+    /* ── Stat Cards ── */
+    .stat-card {
+      background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card2) 100%);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0, 255, 136, 0.15);
+    }
+
+    .stat-card .stat-value {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-card .stat-label {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 0.3rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .stat-card .stat-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      opacity: 0.8;
+    }
+
+    /* ── Buttons ── */
+    .btn-accent {
+      background: linear-gradient(135deg, var(--accent) 0%, #00cc6a 100%);
+      color: #0d0b1e;
+      font-weight: 700;
+      border: none;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-accent:hover {
+      background: linear-gradient(135deg, #00cc6a 0%, var(--accent) 100%);
+      color: #0d0b1e;
+      box-shadow: 0 4px 16px rgba(0, 255, 136, 0.4);
+    }
+
+    .btn-purple {
+      background: linear-gradient(135deg, var(--accent2) 0%, #5b21b6 100%);
+      color: white;
+      font-weight: 700;
+      border: none;
+    }
+
+    .btn-purple:hover {
+      background: linear-gradient(135deg, #5b21b6 0%, var(--accent2) 100%);
+      color: white;
+      box-shadow: 0 4px 16px rgba(124, 58, 237, 0.4);
+    }
+
+    .btn-outline-accent {
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      background: transparent;
+      font-weight: 600;
+    }
+
+    .btn-outline-accent:hover {
+      background: var(--accent);
+      color: #0d0b1e;
+    }
+
+    /* ── Tables ── */
+    .table-dark-custom {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    .table-dark-custom thead th {
+      background: var(--bg-card2);
+      color: var(--accent);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .table-dark-custom tbody tr {
+      transition: background 0.15s;
+    }
+
+    .table-dark-custom tbody tr:hover {
+      background: rgba(0, 255, 136, 0.04);
+    }
+
+    .table-dark-custom td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      vertical-align: middle;
+    }
+
+    /* ── Forms ── */
+    .form-control,
+    .form-select {
+      background: #12102a;
+      border: 1px solid rgba(124, 58, 237, 0.4);
+      color: var(--text-main);
+      border-radius: 8px;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+      background: #12102a;
+      border-color: var(--accent);
+      color: var(--text-main);
+      box-shadow: 0 0 0 0.15rem rgba(0, 255, 136, 0.2);
+    }
+
+    .form-label {
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.9rem;
+      letter-spacing: 0.3px;
+    }
+
+    .form-select option {
+      background: #1e1b4b;
+    }
+
+    /* ── Badge de nível ── */
+    .badge-nivel {
+      display: inline-block;
+      padding: 0.25em 0.8em;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .nivel-Explorador {
+      background: #1e3a5f;
+      color: #60a5fa;
+      border: 1px solid #3b82f6;
+    }
+
+    .nivel-Programador {
+      background: #14532d;
+      color: #4ade80;
+      border: 1px solid #22c55e;
+    }
+
+    .nivel-Maker {
+      background: #713f12;
+      color: #fbbf24;
+      border: 1px solid #f59e0b;
+    }
+
+    .nivel-Engenheiro {
+      background: #4c1d95;
+      color: #c084fc;
+      border: 1px solid #a855f7;
+    }
+
+    .nivel-Mentor {
+      background: #7f1d1d;
+      color: #f87171;
+      border: 1px solid #ef4444;
+    }
+
+    /* ── XP Bar ── */
+    .xp-bar-container {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      overflow: hidden;
+      height: 12px;
+    }
+
+    .xp-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent2) 0%, var(--accent) 100%);
+      border-radius: 20px;
+      transition: width 1s ease;
+      box-shadow: 0 0 8px rgba(0, 255, 136, 0.5);
+    }
+
+    /* ── Alertas ── */
+    .alert {
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    .alert-success {
+      background: rgba(0, 255, 136, 0.1);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .alert-danger {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: #ef4444;
+      color: #f87171;
+    }
+
+    .alert-warning {
+      background: rgba(245, 158, 11, 0.1);
+      border-color: #f59e0b;
+      color: #fbbf24;
+    }
+
+    .alert-info {
+      background: rgba(6, 182, 212, 0.1);
+      border-color: var(--accent3);
+      color: var(--accent3);
+    }
+
+    /* ── Page title ── */
+    .page-title {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--accent);
+      letter-spacing: 2px;
+      margin-bottom: 1.5rem;
+    }
+
+    .page-title .bi {
+      margin-right: 0.5rem;
+    }
+
+    /* ── TecCoin badge ── */
+    .tc-badge {
+      color: #f59e0b;
+      font-weight: 700;
+    }
+
+    .xp-badge {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* ── Ranking positions ── */
+    .rank-1 {
+      color: #fbbf24;
+      font-size: 1.2rem;
+    }
+
+    .rank-2 {
+      color: #94a3b8;
+      font-size: 1.1rem;
+    }
+
+    .rank-3 {
+      color: #b87333;
+      font-size: 1.1rem;
+    }
+
+    /* ── Sidebar / Content ── */
+    .main-content {
+      padding: 2rem 1.5rem;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin-top: 3rem;
+    }
+
+    /* ── Glow effect on headings ── */
+    .glow-text {
+      text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+    }
+  </style>
+  {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+  <!-- ── NAVBAR ── -->
+  {% if current_user.is_authenticated %}
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{{ url_for('auth.index') }}">
+        CEITEC<span>GAME</span>
+        <small style="font-size:0.5rem; color: var(--text-muted); display:block; letter-spacing:3px;">MVP 1.0</small>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+        style="border-color: var(--border);">
+        <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+
+        {% if current_user.tipo in ('admin', 'professor') %}
+        <!-- Menu Professor / Admin -->
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('professor.dashboard') }}">
+              <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('professor.listar_missoes') }}">
+              <i class="bi bi-trophy"></i> Missões
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('professor.lancar_pontuacao') }}">
+              <i class="bi bi-plus-circle"></i> Lançar Pontos
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('professor.listar_alunos') }}">
+              <i class="bi bi-people"></i> Alunos
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('professor.listar_turmas') }}">
+              <i class="bi bi-mortarboard"></i> Turmas
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('professor.ranking') }}">
+              <i class="bi bi-bar-chart"></i> Ranking
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('professor.listar_recompensas') }}">
+              <i class="bi bi-gift"></i> Recompensas
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('professor.gerenciar_resgates') }}">
+              <i class="bi bi-bag-check"></i> Resgates
+            </a>
+          </li>
+        </ul>
+        {% else %}
+        <!-- Menu Aluno -->
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('aluno.dashboard') }}">
+              <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('aluno.historico') }}">
+              <i class="bi bi-clock-history"></i> Histórico
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('aluno.ranking') }}">
+              <i class="bi bi-bar-chart"></i> Ranking
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('aluno.loja') }}">
+              <i class="bi bi-shop"></i> Loja
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('aluno.meus_resgates') }}">
+              <i class="bi bi-bag"></i> Meus Resgates
+            </a>
+          </li>
+        </ul>
+        {% endif %}
+
+        <!-- Usuário logado -->
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item me-3">
+            <span style="color: var(--text-muted); font-size: 0.85rem;">
+              <i class="bi bi-person-circle" style="color: var(--accent);"></i>
+              <strong style="color: var(--text-main);">{{ current_user.nome }}</strong>
+              <span class="badge badge-nivel nivel-{{ current_user.nivel if current_user.tipo == 'aluno' else '' }}"
+                style="{{ 'display:none' if current_user.tipo != 'aluno' else '' }}">
+                {{ current_user.nivel if current_user.tipo == 'aluno' else '' }}
+              </span>
+            </span>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-sm btn-outline-accent" href="{{ url_for('auth.logout') }}">
+              <i class="bi bi-box-arrow-right"></i> Sair
+            </a>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+  {% endif %}
+
+  <!-- ── CONTEÚDO PRINCIPAL ── -->
+  <div style="{{ 'padding-top: 70px;' if current_user.is_authenticated else '' }}">
+    <div class="main-content">
+
+      <!-- Mensagens Flash -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="mb-3">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" style="filter: invert(1);"></button>
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+
+  <footer>
+    <i class="bi bi-cpu" style="color: var(--accent);"></i>
+    CEITECGAME MVP 1.0 &nbsp;|&nbsp; Centro Tecnológico &nbsp;|&nbsp;
+    Desenvolvido com <i class="bi bi-heart-fill" style="color: #ef4444;"></i>
+  </footer>
+
+  <!-- Bootstrap 5 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+
+</html>
