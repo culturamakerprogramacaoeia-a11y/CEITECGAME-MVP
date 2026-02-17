@@ -223,6 +223,61 @@
             transform: translateX(10px);
         }
     }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+        #question-text {
+            font-size: 3.2rem !important;
+            margin-bottom: 2rem !important;
+        }
+
+        .option-btn {
+            padding: 1.2rem;
+            font-size: 1.5rem;
+            border-radius: 15px;
+        }
+
+        .score-hub,
+        .timer-hub {
+            padding: 5px 12px;
+        }
+
+        .card-header {
+            padding: 1.5rem !important;
+        }
+
+        .display-4 {
+            font-size: 2rem;
+        }
+
+        .final-stat-card h2 {
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        #question-text {
+            font-size: 2.5rem !important;
+        }
+
+        .option-btn {
+            padding: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .circular-timer {
+            width: 50px;
+            height: 50px;
+        }
+
+        #timer-badge {
+            font-size: 1.2rem;
+        }
+
+        .h3 {
+            font-size: 1.2rem;
+        }
+    }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>

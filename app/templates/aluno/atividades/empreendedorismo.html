@@ -141,6 +141,54 @@
         background: var(--accent);
         box-shadow: 0 0 10px var(--accent);
     }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+        #question-text {
+            font-size: 1.5rem !important;
+        }
+
+        .choice-btn {
+            padding: 1rem;
+            font-size: 1rem;
+            border-radius: 12px;
+        }
+
+        .display-4 {
+            font-size: 2.2rem;
+        }
+
+        .p-5 {
+            padding: 2rem !important;
+        }
+
+        .font-orbitron h4 {
+            font-size: 0.9rem;
+        }
+
+        #curiosity-box {
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        #question-text {
+            font-size: 1.25rem !important;
+        }
+
+        .choice-btn {
+            padding: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .bg-dark-purple {
+            padding: 0.8rem !important;
+        }
+
+        .badge {
+            font-size: 0.65rem;
+        }
+    }
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
