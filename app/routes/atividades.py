@@ -6,36 +6,39 @@ import json
 
 atividades_bp = Blueprint('atividades', __name__)
 
-def somente_aluno(f):
+def acesso_atividades(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        if not current_user.is_authenticated or current_user.tipo != 'aluno':
-            flash('Área restrita a alunos.', 'danger')
+        if not current_user.is_authenticated:
             return redirect(url_for('auth.login'))
+        # Permitir alunos, professores e admins
+        if current_user.tipo not in ('aluno', 'professor', 'admin'):
+            flash('Área restrita.', 'danger')
+            return redirect(url_for('auth.index'))
         return f(*args, **kwargs)
     return decorated
 
 @atividades_bp.route('/')
 @login_required
-@somente_aluno
+@acesso_atividades
 def menu():
     return render_template('aluno/atividades/menu.html')
 
 @atividades_bp.route('/matematica')
 @login_required
-@somente_aluno
+@acesso_atividades
 def matematica():
     return render_template('aluno/atividades/matematica.html')
 
 @atividades_bp.route('/empreendedorismo')
 @login_required
-@somente_aluno
+@acesso_atividades
 def empreendedorismo():
     return render_template('aluno/atividades/empreendedorismo.html')
 
 @atividades_bp.route('/save', methods=['POST'])
 @login_required
-@somente_aluno
+@acesso_atividades
 def save_result():
     data = request.get_json()
     tipo = data.get('tipo') 
