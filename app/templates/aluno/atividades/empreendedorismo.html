@@ -1,146 +1,288 @@
 {% extends "base.html" %}
-{% block title %}CEITEC HUB - Empreendedorismo Digital{% endblock %}
+{% block title %}Trilha da Startup Unicórnio{% endblock %}
 
 {% block content %}
+<audio id="snd-success" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3" preload="auto"></audio>
+<audio id="snd-fail" src="https://assets.mixkit.co/active_storage/sfx/2021/2021-preview.mp3" preload="auto"></audio>
+<audio id="snd-path" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" preload="auto"></audio>
+
 <div class="container py-4">
-    <div id="sim-container" class="card mx-auto shadow-lg"
-        style="max-width: 900px; background: #131130; border: none; border-radius: 25px;">
-        <div class="card-header border-0 bg-transparent py-4 text-center">
-            <h2 class="font-orbitron"
-                style="background: linear-gradient(90deg, #00ff88, #7c3aed); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
-                🚀 STARTUP SIMULATOR</h2>
-            <div class="d-flex justify-content-center gap-3 mt-2">
-                <span class="badge bg-dark border border-success text-success" id="balance-badge">Caixa: $1000</span>
-                <span class="badge bg-dark border border-primary text-primary" id="reputation-badge">Reputação: 0</span>
+    <!-- Overlay de Reação Game-Feel -->
+    <div id="reaction-overlay" class="reaction-text animate__animated d-none">BOOOM!</div>
+
+    <div id="sim-container" class="card mx-auto overflow-hidden animate__animated animate__zoomIn"
+        style="max-width: 950px; border-radius: 30px; border: none; background: #08071a; min-height: 600px; box-shadow: 0 0 50px rgba(124, 58, 237, 0.2);">
+
+        <!-- Header Dinâmico -->
+        <div class="p-4 d-flex justify-content-between align-items-center bg-dark-purple border-bottom border-accent2">
+            <div class="font-orbitron">
+                <h4 class="m-0 text-white">TECH VENTURE <span class="text-accent2">TRAIL</span></h4>
+                <div class="d-flex gap-3 mt-2">
+                    <span class="badge border border-success text-success" id="val-badge">Valuation: $0.1M</span>
+                    <span class="badge border border-warning text-warning" id="energy-badge">Energia: 100%</span>
+                </div>
+            </div>
+            <div class="progress-trail d-flex gap-2" id="trail-dots">
+                <!-- Dots representados por JS -->
             </div>
         </div>
 
-        <div class="card-body p-4" id="main-sim-screen">
-            <div class="row g-4">
-                <div class="col-md-5">
-                    <img id="step-image"
-                        src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80"
-                        class="img-fluid rounded-4 shadow-lg border-2 border-accent" alt="Cenário">
+        <div class="card-body p-0 position-relative" id="main-sim-screen">
+            <!-- Camada de Fundo Dinâmica -->
+            <div id="sim-bg-layer" class="bg-gradient-tech"></div>
+
+            <div class="row g-0 h-100 position-relative" style="z-index: 2;">
+                <!-- Card de Pergunta/Ação -->
+                <div class="col-md-7 p-5 d-flex flex-column justify-content-center">
+                    <div id="step-content">
+                        <span class="badge bg-accent2 mb-3 px-3 py-2 text-uppercase letter-spacing-2" id="step-tag">FASE
+                            1: CONCEPÇÃO</span>
+                        <h1 id="step-title" class="display-5 text-white fw-bold mb-4 font-orbitron">IDEIA DE MILHÕES?
+                        </h1>
+                        <p id="step-desc" class="fs-4 text-muted mb-5">
+                            Você acaba de descobrir uma falha no mercado de logística global. Como você pretende atacar
+                            esse problema?
+                        </p>
+
+                        <div id="choices-container" class="d-grid gap-3">
+                            <!-- Botões de ação via JS -->
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-7 d-flex flex-column justify-content-center">
-                    <h4 id="step-title" class="text-white mb-3">Sua jornada começa agora!</h4>
-                    <p id="step-desc" class="text-muted fs-5 mb-4">
-                        Você tem uma ideia incrível para um aplicativo de estudo gamificado.
-                        Qual é o seu primeiro passo para tirar a ideia do papel?
-                    </p>
-                    <div id="choices-container" class="d-grid gap-3">
-                        <!-- Botões de escolha via JS -->
+
+                <!-- Lado Visual - Dashboard da Startup -->
+                <div class="col-md-5 p-5 bg-black-soft d-flex flex-column align-items-center justify-content-center">
+                    <div id="visual-report" class="text-center">
+                        <div class="unicorn-icon animate__animated animate__infinite animate__pulse mb-4">🦄</div>
+                        <h3 class="font-orbitron text-accent">$ <span id="valuation-counter">100,000</span></h3>
+                        <p class="text-muted">VALUATION ESTIMADO</p>
+
+                        <div class="mt-5 text-start w-100 p-3 bg-dark rounded-4 border border-accent2">
+                            <h6 class="text-accent2 font-orbitron smaller"><i class="bi bi-terminal"></i> LOG DE
+                                MERCADO:</h6>
+                            <div id="market-log" class="small text-muted" style="height: 100px; overflow-y: auto;">
+                                > Sistema reiniciado...<br>
+                                > Aguardando primeira decisão estratégica...
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Tela de Conclusão -->
-        <div class="card-body p-5 text-center d-none" id="sim-result-screen">
+        <!-- Tela de Vitória Épica -->
+        <div class="card-body p-5 text-center d-none" id="sim-win-screen">
             <div class="animate__animated animate__bounceIn">
-                <div class="display-1 mb-3">🏆</div>
-                <h1 class="font-orbitron text-accent" id="sim-status-title">STARTUP LANÇADA!</h1>
-                <p class="fs-4 text-muted" id="sim-final-desc">O mercado recebeu sua ideia... vamos ver os resultados!
-                </p>
+                <div class="display-1 mb-3">💎</div>
+                <h1 class="font-orbitron display-3 text-accent shimmer-text">STARTUP UNICÓRNIO!</h1>
+                <p class="fs-3 text-muted">Você revolucionou o mercado e atingiu 1 Bilhão em valuation.</p>
 
                 <div class="row g-4 my-5 justify-content-center">
-                    <div class="col-4">
-                        <div class="p-3 bg-dark-soft rounded-4">
-                            <h3 id="sim-xp" class="text-accent mb-0">0</h3>
-                            <small class="text-muted">XP ADQUIRIDO</small>
+                    <div class="col-md-4">
+                        <div class="p-4 bg-dark-soft rounded-4 border border-accent">
+                            <h2 id="sim-xp" class="text-accent display-4 font-orbitron">0</h2>
+                            <small class="text-muted">XP ADQUIRIDO (NÍVEL LENDÁRIO)</small>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <div class="p-3 bg-dark-soft rounded-4">
-                            <h3 id="sim-tc" class="text-warning mb-0">0</h3>
-                            <small class="text-muted">TECCOINS</small>
+                    <div class="col-md-4">
+                        <div class="p-4 bg-dark-soft rounded-4 border border-warning">
+                            <h2 id="sim-tc" class="text-warning display-4 font-orbitron">0</h2>
+                            <small class="text-muted">TECCOINS BONUS</small>
                         </div>
                     </div>
                 </div>
 
-                <a href="{{ url_for('atividades.menu') }}" class="btn btn-atv-play px-5">VOLTAR AO HUB</a>
+                <a href="{{ url_for('atividades.menu') }}"
+                    class="btn btn-purple btn-xl px-5 py-3 font-orbitron fs-4 animate__animated animate__pulse animate__infinite">
+                    CELEBRAR NO HUB!
+                </a>
             </div>
         </div>
     </div>
 </div>
 
 <style>
-    .font-orbitron {
-        font-family: 'Orbitron', sans-serif;
-        font-weight: 700;
+    .bg-dark-purple {
+        background: #130f2b;
     }
 
-    .bg-dark-soft {
-        background: rgba(255, 255, 255, 0.05);
+    .bg-black-soft {
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(5px);
+    }
+
+    .bg-gradient-tech {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at top right, #7c3aed33, transparent),
+            radial-gradient(circle at bottom left, #00ff8811, transparent);
+        pointer-events: none;
+    }
+
+    .font-orbitron {
+        font-family: 'Orbitron', sans-serif;
+    }
+
+    .letter-spacing-2 {
+        letter-spacing: 2px;
     }
 
     .choice-btn {
         background: #1e1b4b;
-        border: 1px solid rgba(0, 255, 136, 0.2);
+        border: 2px solid rgba(124, 58, 237, 0.4);
         color: white;
         text-align: left;
-        padding: 1.2rem;
-        border-radius: 15px;
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        padding: 1.5rem;
+        border-radius: 18px;
+        transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+        font-weight: 600;
+        position: relative;
+        overflow: hidden;
     }
 
     .choice-btn:hover {
-        background: rgba(0, 255, 136, 0.1);
-        border-color: var(--accent);
-        transform: translateX(10px);
+        background: var(--accent2);
+        border-color: #fff;
+        transform: scale(1.03) rotate(-1deg);
+        box-shadow: 0 10px 40px rgba(124, 58, 237, 0.5);
     }
 
-    #step-image {
-        transition: all 0.5s ease;
-        height: 250px;
-        object-fit: cover;
+    .choice-btn::after {
+        content: 'SELECT';
+        position: absolute;
+        right: 20px;
+        opacity: 0;
+        transition: 0.3s;
+        font-family: 'Orbitron';
+        font-size: 0.7rem;
+    }
+
+    .choice-btn:hover::after {
+        opacity: 0.8;
+    }
+
+    .unicorn-icon {
+        font-size: 8rem;
+        filter: drop-shadow(0 0 30px #7c3aed);
+    }
+
+    .reaction-text {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 8rem;
+        font-family: 'Orbitron';
+        font-weight: 900;
+        color: #fff;
+        text-shadow: 0 0 50px #7c3aed;
+        z-index: 9999;
+        pointer-events: none;
+    }
+
+    .shimmer-text {
+        background: linear-gradient(92deg, #00ff88 0%, #fff 50%, #00ff88 100%);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shimmer 2s linear infinite;
+    }
+
+    @keyframes shimmer {
+        to {
+            background-position: 200% center;
+        }
+    }
+
+    .trail-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+    }
+
+    .trail-dot.active {
+        background: var(--accent) !important;
+        box-shadow: 0 0 10px var(--accent);
     }
 </style>
 
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
 <script>
     let simData = {
-        balance: 1000,
-        reputation: 0,
+        valuation: 100000,
+        energy: 100,
         currentStep: 0,
         history: []
     };
 
     const storySteps = [
         {
-            title: "O Ponto de Partida",
-            desc: "Como você vai começar seu projeto de Empreendedorismo Digital?",
+            tag: "CONCEPÇÃO",
+            title: "MVP OU PERFEIÇÃO?",
+            desc: "Seu protótipo básico já funciona, mas não está bonito. O que você faz?",
             choices: [
-                { text: "Focar 100% no design (UX/UI)", impact: { b: -300, r: 20 }, next: 1 },
-                { text: "Entrevistar possíveis usuários", impact: { b: -50, r: 40 }, next: 1 },
-                { text: "Contratar programadores caros", impact: { b: -800, r: 10 }, next: 1 }
-            ],
-            img: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=500"
+                { text: "Lançar AGORA e coletar feedback real", impact: { v: 200000, e: -10, r: "BOOOM! FEEDBACK RÁPIDO!" }, next: 1 },
+                { text: "Passar 6 meses refinando o design", impact: { v: -50000, e: -30, r: "LENTO... MERCADO ESFRIOU!" }, next: 1 },
+                { text: "Tentar pivotar para outra ideia", impact: { v: 0, e: -5, r: "PIVOTANDO..." }, next: 0 }
+            ]
         },
         {
-            title: "O Primeiro Protótipo",
-            desc: "Seu protótipo está pronto! Onde você vai testar?",
+            tag: "CRESCIMENTO",
+            title: "INVESTIMENTO ANJO",
+            desc: "Um grupo de investidores ofereceu 500k por 20% da sua empresa. Aceita?",
             choices: [
-                { text: "Postar nas redes sociais", impact: { b: 0, r: 15 }, next: 2 },
-                { text: "Fazer um evento de lançamento", impact: { b: -400, r: 50 }, next: 2 },
-                { text: "Pedir feedback para mentores", impact: { b: -100, r: 35 }, next: 2 }
-            ],
-            img: "https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=500"
+                { text: "ACEITAR: Dinheiro no caixa para escalar!", impact: { v: 500000, e: 20, r: "POOOOKER! CAIXA CHEIO!" }, next: 2 },
+                { text: "RECUSAR: Manter controle total e ir devagar", impact: { v: 50000, e: -40, r: "BOOTSTRAPPING!" }, next: 2 }
+            ]
         },
         {
-            title: "Hora de Escalar",
-            desc: "Sua base de usuários cresceu. Qual a prioridade agora?",
+            tag: "A ESCALA",
+            title: "VIRALIZOU! E AGORA?",
+            desc: "Seu servidor caiu devido ao excesso de acessos. O mercado está em pânico!",
             choices: [
-                { text: "Investir em Marketing Pesado", impact: { b: -500, r: 60 }, next: 3 },
-                { text: "Melhorar a Velocidade do App", impact: { b: -200, r: 30 }, next: 3 },
-                { text: "Vender o negócio para um investidor", impact: { b: 1500, r: -20 }, next: 3 }
-            ],
-            img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=500"
+                { text: "Virar a noite programando (HERÓI)", impact: { v: 1500000, e: -50, r: "GOD MODE!" }, next: 3 },
+                { text: "Delegar para uma consultoria cara", impact: { v: -200000, e: 10, r: "CUSTO ALTO!" }, next: 3 }
+            ]
+        },
+        {
+            tag: "DOMINAÇÃO",
+            title: "CONCORRENTE GIGANTE",
+            desc: "A Google anunciou um produto similar ao seu. Qual sua reação?",
+            choices: [
+                { text: "Anunciar parceria de integração", impact: { v: 500000000, e: 30, r: "M&A À VISTA!" }, next: 4 },
+                { text: "Processar por violação de patente", impact: { v: -10000000, e: -20, r: "TRETA JURÍDICA!" }, next: 4 }
+            ]
         }
     ];
 
-    function updateHeader() {
-        document.getElementById('balance-badge').innerText = `Caixa: $${simData.balance}`;
-        document.getElementById('reputation-badge').innerText = `Reputação: ${simData.reputation}`;
+    function logMarket(msg) {
+        const log = document.getElementById('market-log');
+        log.innerHTML = `> ${msg}<br>` + log.innerHTML;
+    }
+
+    function showReaction(text) {
+        const overlay = document.getElementById('reaction-overlay');
+        overlay.innerText = text;
+        overlay.classList.remove('d-none', 'animate__zoomIn');
+        void overlay.offsetWidth; // trigger reflow
+        overlay.classList.add('animate__zoomIn');
+
+        setTimeout(() => { overlay.classList.add('d-none'); }, 1500);
+    }
+
+    function renderTrail() {
+        const trail = document.getElementById('trail-dots');
+        trail.innerHTML = '';
+        for (let i = 0; i < storySteps.length + 1; i++) {
+            const dot = document.createElement('div');
+            dot.className = `trail-dot ${i <= simData.currentStep ? 'active' : ''}`;
+            trail.appendChild(dot);
+        }
     }
 
     function renderStep() {
@@ -149,10 +291,11 @@
             return;
         }
 
+        renderTrail();
         const step = storySteps[simData.currentStep];
+        document.getElementById('step-tag').innerText = `FASE ${simData.currentStep + 1}: ${step.tag}`;
         document.getElementById('step-title').innerText = step.title;
         document.getElementById('step-desc').innerText = step.desc;
-        document.getElementById('step-image').src = step.img;
 
         const container = document.getElementById('choices-container');
         container.innerHTML = '';
@@ -160,56 +303,65 @@
         step.choices.forEach(c => {
             const btn = document.createElement('button');
             btn.className = 'choice-btn';
-            btn.innerHTML = `<i class="bi bi-chevron-right me-2 text-accent"></i> ${c.text}`;
+            btn.innerHTML = `<i class="bi bi-rocket-takeoff me-2"></i> ${c.text}`;
             btn.onclick = () => makeChoice(c);
             container.appendChild(btn);
         });
     }
 
     function makeChoice(choice) {
-        simData.balance += choice.impact.b;
-        simData.reputation += choice.impact.r;
+        document.getElementById('snd-path').play();
+        simData.valuation += choice.impact.v;
+        simData.energy += choice.impact.e;
         simData.currentStep = choice.next;
-        updateHeader();
+
+        showReaction(choice.impact.r);
+        logMarket(`Decidido: ${choice.text}`);
+        logMarket(`Valuation agora em $${(simData.valuation / 1000000).toFixed(2)}M`);
+
+        // Update visual counters
+        updateVisuals();
+
+        if (simData.energy <= 0) {
+            alert("Burnout! Você faliu por falta de energia.");
+            window.location.reload();
+            return;
+        }
+
         renderStep();
+    }
+
+    function updateVisuals() {
+        document.getElementById('val-badge').innerText = `Valuation: $${(simData.valuation / 1000000).toFixed(2)}M`;
+        document.getElementById('energy-badge').innerText = `Energia: ${simData.energy}%`;
+        document.getElementById('valuation-counter').innerText = simData.valuation.toLocaleString();
     }
 
     async function finishSim() {
         document.getElementById('main-sim-screen').classList.add('d-none');
-        document.getElementById('sim-result-screen').classList.remove('d-none');
+        document.getElementById('sim-win-screen').classList.remove('d-none');
+        document.getElementById('snd-success').play();
 
-        // Cálculo final de Pontos
-        const baseXP = 150;
-        const repBonus = simData.reputation * 2;
-        const balBonus = simData.balance > 0 ? 50 : 0;
+        confetti({ particleCount: 200, spread: 90, origin: { y: 0.6 } });
 
-        const totalXP = baseXP + repBonus + balBonus;
-        const totalTC = Math.floor(totalXP / 8);
+        const xp = Math.floor(simData.valuation / 1000000) + 200;
+        const tc = Math.floor(xp / 5);
 
-        document.getElementById('sim-xp').innerText = totalXP;
-        document.getElementById('sim-tc').innerText = totalTC;
+        document.getElementById('sim-xp').innerText = xp;
+        document.getElementById('sim-tc').innerText = tc;
 
-        if (simData.balance < 0) {
-            document.getElementById('sim-status-title').innerText = "VAI QUE DÁ!";
-            document.getElementById('sim-status-title').classList.replace('text-accent', 'text-warning');
-            document.getElementById('sim-final-desc').innerText = "Sua startup faliu em dinheiro, mas você ganhou muita experiência!";
-        }
-
-        // Salvar via API
         try {
             await fetch("{{ url_for('atividades.save_result') }}", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     tipo: "empreendedorismo",
-                    xp: totalXP,
-                    teccoins: totalTC,
-                    obs: `Simulação de Startup concluída. Reputação: ${simData.reputation}, Saldo: ${simData.balance}.`
+                    xp: xp,
+                    teccoins: tc,
+                    obs: `Startuper Unicórnio! Valuation final: $${(simData.valuation / 1000000).toFixed(2)}M.`
                 })
             });
-        } catch (e) {
-            console.error(e);
-        }
+        } catch (e) { console.error(e); }
     }
 
     renderStep();

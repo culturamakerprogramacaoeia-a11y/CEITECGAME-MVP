@@ -1,191 +1,375 @@
 {% extends "base.html" %}
-{% block title %}Matemática Tech - Desafio{% endblock %}
+{% block title %}Matemática Tech - Desafio Ninja{% endblock %}
 
 {% block content %}
+<!-- Sons -->
+<audio id="snd-correct" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" preload="auto"></audio>
+<audio id="snd-wrong" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3" preload="auto"></audio>
+<audio id="snd-click" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3" preload="auto"></audio>
+
 <div class="container py-4">
-    <div id="game-container" class="card mx-auto" style="max-width: 800px; border-radius: 20px; overflow: hidden;">
-        <!-- Header do Jogo -->
-        <div class="card-header d-flex justify-content-between align-items-center py-3 bg-dark-custom">
-            <span class="badge rounded-pill bg-accent-glow" id="score-badge">XP: 0</span>
-            <h4 class="m-0 font-orbitron text-accent">MATEMÁTICA TECH</h4>
-            <span class="badge rounded-pill bg-purple-glow" id="timer-badge">Tempo: 45s</span>
+    <div id="game-container" class="card mx-auto shadow-2xl animate__animated animate__fadeIn"
+        style="max-width: 850px; border-radius: 30px; border: 3px solid var(--accent); background: #050411;">
+
+        <!-- Topo Gamificado -->
+        <div class="card-header d-flex justify-content-between align-items-center py-4 px-5"
+            style="background: rgba(0,0,0,0.4); border-bottom: 2px solid rgba(0,255,136,0.2);">
+            <div class="d-flex align-items-center gap-3">
+                <div class="score-hub pulse-mini">
+                    <small class="d-block text-muted">PONTOS</small>
+                    <span id="score-badge" class="h3 m-0 text-accent fw-bold font-orbitron">0</span>
+                </div>
+                <div class="combo-hub d-none" id="combo-container">
+                    <small class="d-block text-warning">COMBO!</small>
+                    <span id="combo-text" class="h4 m-0 text-warning fw-bold">x1</span>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <h2 class="font-orbitron text-white mb-0" style="letter-spacing: 2px;">MATEMÁTICA <span
+                        class="text-accent">TECH</span></h2>
+                <span class="badge bg-dark border border-accent2 text-accent2" id="difficulty-badge">NÍVEL: FÁCIL</span>
+            </div>
+
+            <div class="timer-hub">
+                <div class="circular-timer">
+                    <span id="timer-badge" class="h4 m-0 font-orbitron">30</span>
+                </div>
+            </div>
         </div>
 
-        <!-- Tela Principal -->
+        <!-- Tela de Jogo -->
         <div class="card-body p-5 text-center" id="play-screen">
-            <div id="progress-container" class="mb-4">
-                <div class="progress" style="height: 10px; background: rgba(255,255,255,0.1);">
-                    <div id="bar-progress" class="progress-bar bg-accent" role="progressbar" style="width: 0%"></div>
+            <div class="progress-wrapper mb-5">
+                <div class="progress-label d-flex justify-content-between mb-2">
+                    <span class="text-muted"><i class="bi bi-graph-up"></i> PROGRESSO DA ARENA</span>
+                    <span id="progress-text" class="text-accent">0/20</span>
+                </div>
+                <div class="progress"
+                    style="height: 12px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: visible;">
+                    <div id="bar-progress" class="progress-bar progress-bar-striped progress-bar-animated bg-accent"
+                        role="progressbar" style="width: 0%; border-radius: 10px; box-shadow: 0 0 15px var(--accent);">
+                    </div>
                 </div>
             </div>
 
-            <h2 id="question-text" class="mb-4" style="font-size: 3rem; font-weight: 700;">12 + 8 = ?</h2>
+            <div id="question-box" class="animate__animated">
+                <p id="op-label" class="text-accent2 fw-bold text-uppercase mb-2" style="letter-spacing: 3px;">OPERAÇÃO
+                    DETECTADA</p>
+                <h1 id="question-text" class="display-1 fw-black text-white mb-5 font-orbitron"
+                    style="font-size: 5.5rem; text-shadow: 0 0 30px rgba(255,255,255,0.2);">? + ?</h1>
+            </div>
 
-            <div class="row g-3" id="options-container">
-                <!-- Botões de opções via JS -->
+            <div class="row g-4 justify-content-center" id="options-container">
+                <!-- Opções via JS -->
             </div>
         </div>
 
-        <!-- Tela de Resultado -->
+        <!-- Tela de Resultado Customizada -->
         <div class="card-body p-5 text-center d-none" id="result-screen">
-            <div class="animate__animated animate__zoomIn">
-                <i class="bi bi-trophy-fill text-accent" style="font-size: 5rem;"></i>
-                <h1 class="font-orbitron mt-3" id="result-title">PARABÉNS!</h1>
-                <p class="fs-4" id="result-message">Você completou o desafio de matemática.</p>
-                <div class="d-flex justify-content-center gap-4 my-4">
-                    <div class="stat-item">
-                        <span class="d-block text-muted">XP GANHO</span>
-                        <h2 class="text-accent" id="final-xp">0</h2>
+            <div class="animate__animated animate__backInDown">
+                <div class="result-icon-wrapper mb-4">
+                    <i class="bi bi-star-fill text-warning animate__animated animate__infinite animate__pulse"
+                        style="font-size: 6rem;"></i>
+                </div>
+                <h1 class="display-4 font-orbitron text-accent mb-2">PONTUAÇÃO SUPREMA!</h1>
+                <p class="fs-4 text-muted mb-5">Seu raciocínio lógico está em outra dimensão.</p>
+
+                <div class="row g-4 justify-content-center mb-5">
+                    <div class="col-md-4">
+                        <div class="final-stat-card">
+                            <i class="bi bi-lightning-fill text-accent"></i>
+                            <h2 id="final-xp">0</h2>
+                            <small>XP CONQUISTADO</small>
+                        </div>
                     </div>
-                    <div class="stat-item">
-                        <span class="d-block text-muted">TECCOINS</span>
-                        <h2 class="text-warning" id="final-tc">0</h2>
+                    <div class="col-md-4">
+                        <div class="final-stat-card">
+                            <i class="bi bi-coin text-warning"></i>
+                            <h2 id="final-tc">0</h2>
+                            <small>TECCOINS</small>
+                        </div>
                     </div>
                 </div>
-                <button onclick="window.location.reload()" class="btn btn-outline-accent me-2">Tentar Novamente</button>
-                <a href="{{ url_for('atividades.menu') }}" class="btn btn-accent">Voltar ao Menu</a>
+
+                <div class="d-flex justify-content-center gap-3">
+                    <button onclick="window.location.reload()" class="btn btn-purple btn-lg px-5 font-orbitron">
+                        <i class="bi bi-arrow-clockwise"></i> REPETIR DESAFIO
+                    </button>
+                    <a href="{{ url_for('atividades.menu') }}" class="btn btn-outline-accent btn-lg px-5 font-orbitron">
+                        VOLTAR AO HUB
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 <style>
-    .bg-dark-custom {
-        background: #0a081a !important;
-        border-bottom: 2px solid var(--border);
+    :root {
+        --accent: #00ff88;
+        --accent2: #7c3aed;
+    }
+
+    body {
+        background: #010108;
     }
 
     .font-orbitron {
         font-family: 'Orbitron', sans-serif;
-        letter-spacing: 1px;
     }
 
-    .bg-accent-glow {
-        background: var(--accent);
-        color: #000;
-        box-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
-        font-weight: 700;
+    .score-hub,
+    .timer-hub {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 10px 20px;
+        border-radius: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .bg-purple-glow {
-        background: var(--accent2);
-        color: #fff;
+    .circular-timer {
+        width: 60px;
+        height: 60px;
+        border: 3px solid var(--accent2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         box-shadow: 0 0 15px rgba(124, 58, 237, 0.4);
-        font-weight: 700;
     }
 
     .option-btn {
-        background: rgba(124, 58, 237, 0.1);
+        background: linear-gradient(135deg, #161233 0%, #0a081a 100%);
         border: 2px solid rgba(124, 58, 237, 0.3);
         color: white;
-        padding: 1.5rem;
-        font-size: 1.5rem;
-        font-weight: 700;
-        border-radius: 15px;
-        transition: all 0.2s;
+        padding: 1.8rem;
+        font-size: 2.2rem;
+        font-weight: 800;
+        border-radius: 20px;
+        transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     .option-btn:hover {
-        background: rgba(124, 58, 237, 0.3);
-        transform: scale(1.03);
+        background: rgba(124, 58, 237, 0.2);
         border-color: var(--accent2);
+        transform: scale(1.05);
+        box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
     }
 
     .option-btn.correct {
         background: var(--accent) !important;
         color: #000 !important;
         border-color: #fff !important;
+        box-shadow: 0 0 30px var(--accent);
     }
 
     .option-btn.wrong {
         background: #ef4444 !important;
         border-color: #fff !important;
+        box-shadow: 0 0 30px #ef4444;
     }
 
-    .stat-item {
-        padding: 10px 20px;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 12px;
-        min-width: 120px;
+    .final-stat-card {
+        background: rgba(255, 255, 255, 0.03);
+        padding: 2rem;
+        border-radius: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .final-stat-card h2 {
+        font-size: 3rem;
+        margin: 10px 0;
+        font-family: 'Orbitron';
+    }
+
+    .final-stat-card i {
+        font-size: 2.5rem;
+    }
+
+    .pulse-mini {
+        animation: pulseAnim 2s infinite;
+    }
+
+    @keyframes pulseAnim {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.02);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .shake {
+        animation: shake 0.5s;
+    }
+
+    @keyframes shake {
+
+        0%,
+        100% {
+            transform: translateX(0);
+        }
+
+        25% {
+            transform: translateX(-10px);
+        }
+
+        75% {
+            transform: translateX(10px);
+        }
     }
 </style>
 
-<script>
-    const questions = [
-        { q: "12 + 15", a: 27, o: [27, 25, 30, 28] },
-        { q: "8 x 7", a: 56, o: [54, 56, 64, 48] },
-        { q: "45 / 5", a: 9, o: [7, 8, 9, 11] },
-        { q: "2³ (Dois ao cubo)", a: 8, o: [6, 8, 4, 12] },
-        { q: "100 - 37", a: 63, o: [63, 73, 53, 67] },
-        { q: "15 x 3", a: 45, o: [35, 45, 55, 40] },
-        { q: "√64 (Raiz de 64)", a: 8, o: [6, 7, 8, 9] },
-        { q: "7 + 5 x 2", a: 17, o: [24, 17, 19, 14] },
-        { q: "25% de 200", a: 50, o: [25, 40, 50, 60] },
-        { q: "10² / 4", a: 25, o: [20, 25, 50, 40] }
-    ];
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-    let currentIdx = 0;
+<script>
     let score = 0;
-    let timer = 45;
-    let gameInterval;
+    let combo = 0;
+    let timer = 30;
+    let currentQuestion = {};
     let isGameOver = false;
+    let questionCount = 0;
+    const totalQuestions = 20;
+    let gameInterval;
+
+    const sounds = {
+        correct: document.getElementById('snd-correct'),
+        wrong: document.getElementById('snd-wrong'),
+        click: document.getElementById('snd-click')
+    };
+
+    function playSound(name) {
+        sounds[name].currentTime = 0;
+        sounds[name].play().catch(e => console.log('Sons desativados até interação'));
+    }
+
+    function generateRandomQuestion() {
+        const difficulty = score < 50 ? 'EASY' : (score < 120 ? 'MEDIUM' : 'HARD');
+        document.getElementById('difficulty-badge').innerText = `NÍVEL: ${difficulty}`;
+
+        let a, b, op, ans;
+        const ops = difficulty === 'EASY' ? ['+', '-'] : ['+', '-', '*', '/'];
+        op = ops[Math.floor(Math.random() * ops.length)];
+
+        if (difficulty === 'EASY') {
+            a = Math.floor(Math.random() * 20) + 1;
+            b = Math.floor(Math.random() * 20) + 1;
+        } else if (difficulty === 'MEDIUM') {
+            a = Math.floor(Math.random() * 50) + 10;
+            b = Math.floor(Math.random() * 30) + 5;
+        } else {
+            a = Math.floor(Math.random() * 100) + 20;
+            b = Math.floor(Math.random() * 50) + 10;
+        }
+
+        if (op === '+') { ans = a + b; }
+        else if (op === '-') {
+            if (a < b) [a, b] = [b, a];
+            ans = a - b;
+        }
+        else if (op === '*') {
+            if (difficulty === 'EASY') b = Math.floor(Math.random() * 5) + 2;
+            ans = a * b;
+        }
+        else if (op === '/') {
+            ans = Math.floor(Math.random() * 10) + 2;
+            b = Math.floor(Math.random() * 10) + 2;
+            a = ans * b;
+        }
+
+        const options = [ans];
+        while (options.length < 4) {
+            let fake = ans + (Math.floor(Math.random() * 10) - 5);
+            if (fake !== ans && fake >= 0 && !options.includes(fake)) options.push(fake);
+        }
+
+        return {
+            text: `${a} ${op === '*' ? 'x' : (op === '/' ? '÷' : op)} ${b}`,
+            ans,
+            options: options.sort(() => Math.random() - 0.5),
+            type: op === '+' ? 'SOMA' : (op === '-' ? 'SUBTRAÇÃO' : (op === '*' ? 'MULTIPLICAÇÃO' : 'DIVISÃO'))
+        };
+    }
+
+    function renderQuestion() {
+        if (questionCount >= totalQuestions) {
+            endGame();
+            return;
+        }
+
+        currentQuestion = generateRandomQuestion();
+        document.getElementById('question-text').innerText = currentQuestion.text + " = ?";
+        document.getElementById('op-label').innerText = currentQuestion.type + " DETECTADA";
+
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
+
+        currentQuestion.options.forEach(opt => {
+            const div = document.createElement('div');
+            div.className = 'col-6 col-md-3';
+            div.innerHTML = `<button class="btn option-btn w-100" onclick="checkAnswer(this, ${opt})">${opt}</button>`;
+            container.appendChild(div);
+        });
+
+        const progress = ((questionCount) / totalQuestions) * 100;
+        document.getElementById('bar-progress').style.width = progress + "%";
+        document.getElementById('progress-text').innerText = `${questionCount}/${totalQuestions}`;
+    }
+
+    function checkAnswer(btn, val) {
+        if (isGameOver) return;
+        const btns = document.querySelectorAll('.option-btn');
+        btns.forEach(b => b.style.pointerEvents = 'none');
+
+        if (val === currentQuestion.ans) {
+            btn.classList.add('correct');
+            playSound('correct');
+            combo++;
+            score += 10 * (1 + Math.floor(combo / 3));
+
+            // Efeito Confetti se combo alto
+            if (combo >= 3) {
+                confetti({ particleCount: 50, spread: 60, origin: { y: 0.7 } });
+                document.getElementById('combo-container').classList.remove('d-none');
+                document.getElementById('combo-text').innerText = `x${1 + Math.floor(combo / 3)}`;
+            }
+
+            document.getElementById('score-badge').innerText = score;
+            document.getElementById('question-box').classList.add('animate__bounceIn');
+        } else {
+            btn.classList.add('wrong');
+            playSound('wrong');
+            document.getElementById('game-container').classList.add('shake');
+            combo = 0;
+            document.getElementById('combo-container').classList.add('d-none');
+
+            // Mostrar a correta
+            btns.forEach(b => {
+                if (parseInt(b.innerText) === currentQuestion.ans) b.classList.add('correct');
+            });
+        }
+
+        setTimeout(() => {
+            document.getElementById('game-container').classList.remove('shake');
+            document.getElementById('question-box').classList.remove('animate__bounceIn');
+            questionCount++;
+            renderQuestion();
+        }, 900);
+    }
 
     function startGame() {
         renderQuestion();
         gameInterval = setInterval(() => {
             timer--;
-            document.getElementById('timer-badge').innerText = `Tempo: ${timer}s`;
+            document.getElementById('timer-badge').innerText = timer;
+            if (timer <= 10) document.querySelector('.circular-timer').style.borderColor = '#ef4444';
             if (timer <= 0) endGame();
         }, 1000);
-    }
-
-    function renderQuestion() {
-        if (currentIdx >= questions.length) {
-            endGame();
-            return;
-        }
-
-        const q = questions[currentIdx];
-        document.getElementById('question-text').innerText = q.q + " = ?";
-        const container = document.getElementById('options-container');
-        container.innerHTML = '';
-
-        // Misturar opções
-        const options = [...q.o].sort(() => Math.random() - 0.5);
-
-        options.forEach(opt => {
-            const btn = document.createElement('div');
-            btn.className = 'col-6';
-            btn.innerHTML = `<button class="btn option-btn w-100" onclick="checkAnswer(this, ${opt})">${opt}</button>`;
-            container.appendChild(btn);
-        });
-
-        const progress = ((currentIdx) / questions.length) * 100;
-        document.getElementById('bar-progress').style.width = progress + "%";
-    }
-
-    function checkAnswer(btn, val) {
-        if (isGameOver) return;
-        const correct = questions[currentIdx].a;
-        const btns = document.querySelectorAll('.option-btn');
-        btns.forEach(b => b.style.pointerEvents = 'none');
-
-        if (val === correct) {
-            btn.classList.add('correct');
-            score += 10;
-            document.getElementById('score-badge').innerText = `XP: ${score}`;
-        } else {
-            btn.classList.add('wrong');
-            // Mostrar a correta
-            btns.forEach(b => {
-                if (parseInt(b.innerText) === correct) b.classList.add('correct');
-            });
-        }
-
-        setTimeout(() => {
-            currentIdx++;
-            renderQuestion();
-        }, 800);
     }
 
     async function endGame() {
@@ -194,27 +378,24 @@
         document.getElementById('play-screen').classList.add('d-none');
         document.getElementById('result-screen').classList.remove('d-none');
 
-        const tc = Math.floor(score / 5);
-        document.getElementById('final-xp').innerText = score;
-        document.getElementById('final-tc').innerText = tc;
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
 
-        // Salvar no Banco via API
+        const finalTC = Math.floor(score / 5);
+        document.getElementById('final-xp').innerText = score;
+        document.getElementById('final-tc').innerText = finalTC;
+
         try {
-            const response = await fetch("{{ url_for('atividades.save_result') }}", {
+            await fetch("{{ url_for('atividades.save_result') }}", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     tipo: "matematica",
                     xp: score,
-                    teccoins: tc,
-                    obs: `Fez ${score} pontos no desafio de Matemática Tech.`
+                    teccoins: finalTC,
+                    obs: `Arena Ninja concluída! Score: ${score}, Questões: ${questionCount}.`
                 })
             });
-            const result = await response.json();
-            console.log("Salvo com sucesso!", result);
-        } catch (e) {
-            console.error("Erro ao salvar:", e);
-        }
+        } catch (e) { console.error(e); }
     }
 
     startGame();
