@@ -54,18 +54,25 @@
                 <p class="fs-4 text-muted mb-5">Você agora domina os conceitos fundamentais da tecnologia e negócios
                     digitais.</p>
 
-                <div class="row g-4 justify-content-center mb-5">
-                    <div class="col-md-5">
-                        <div class="stat-box p-4 rounded-4 bg-dark-soft border border-accent">
-                            <h2 id="final-xp" class="text-accent display-4 font-orbitron">0</h2>
-                            <small class="text-muted">XP ADQUIRIDO</small>
+                <div class="row g-3 justify-content-center mb-4 mb-md-5">
+                    <div class="col-8 col-md-5">
+                        <div class="stat-box p-3 p-md-4 rounded-4 bg-dark-soft border border-accent">
+                            <h2 id="final-xp" class="text-accent display-5 font-orbitron mb-0">0</h2>
+                            <small class="text-muted text-uppercase" style="font-size: 0.7rem;">XP ADQUIRIDO</small>
                         </div>
                     </div>
                 </div>
 
-                <a href="{{ url_for('atividades.menu') }}" class="btn btn-purple btn-xl px-5 py-3 font-orbitron">
-                    VOLTAR AO HUB
-                </a>
+                <div class="d-flex flex-column flex-md-row justify-content-center gap-2">
+                    <button onclick="window.location.reload()"
+                        class="btn btn-purple btn-lg px-4 font-orbitron w-100 w-md-auto">
+                        <i class="bi bi-arrow-clockwise"></i> RECOMEÇAR
+                    </button>
+                    <a href="{{ url_for('atividades.menu') }}"
+                        class="btn btn-outline-accent btn-lg px-4 font-orbitron w-100 w-md-auto">
+                        VOLTAR AO HUB
+                    </a>
+                </div>
             </div>
         </div>
     </div>
@@ -273,10 +280,23 @@
         step: document.getElementById('snd-step')
     };
 
+    let shuffledTrail = [];
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
     function initTrail() {
+        // Criar cópia e embaralhar as questões
+        shuffledTrail = shuffleArray([...trailData]).slice(0, 8); // Pegar 8 aleatórias
+
         const prog = document.getElementById('trail-prog');
         prog.innerHTML = '';
-        trailData.forEach((_, i) => {
+        shuffledTrail.forEach((_, i) => {
             const dot = document.createElement('div');
             dot.className = `trail-dot ${i === 0 ? 'active' : ''}`;
             prog.appendChild(dot);
@@ -285,26 +305,34 @@
     }
 
     function renderStep() {
-        if (currentStep >= trailData.length) {
+        if (currentStep >= shuffledTrail.length) {
             finishTrail();
             return;
         }
 
-        const data = trailData[currentStep];
-        document.getElementById('step-count').innerText = `QUESTÃO ${currentStep + 1} DE ${trailData.length}`;
+        const data = shuffledTrail[currentStep];
+        document.getElementById('step-count').innerText = `QUESTÃO ${currentStep + 1} DE ${shuffledTrail.length}`;
         document.getElementById('question-text').innerText = data.q;
         document.getElementById('curiosity-text').innerText = data.c;
-        document.getElementById('curiosity-box').classList.remove('animate__lightSpeedInRight');
-        void document.getElementById('curiosity-box').offsetWidth;
-        document.getElementById('curiosity-box').classList.add('animate__lightSpeedInRight');
+
+        // Reset da animação de curiosidade
+        const curBox = document.getElementById('curiosity-box');
+        curBox.classList.remove('animate__lightSpeedInRight');
+        void curBox.offsetWidth;
+        curBox.classList.add('animate__lightSpeedInRight');
 
         const container = document.getElementById('options-container');
         container.innerHTML = '';
 
-        data.o.forEach((opt, i) => {
+        // Mapear opções com seus índices originais para checar resposta
+        let optionsWithIdx = data.o.map((text, idx) => ({ text, idx }));
+        shuffleArray(optionsWithIdx);
+
+        optionsWithIdx.forEach(opt => {
             const col = document.createElement('div');
             col.className = 'col-12';
-            col.innerHTML = `<button class="btn choice-btn w-100" onclick="checkChoice(this, ${i})">${opt}</button>`;
+            // Passamos o índice original (idx) para a checagem
+            col.innerHTML = `<button class="btn choice-btn w-100" onclick="checkChoice(this, ${opt.idx})">${opt.text}</button>`;
             container.appendChild(col);
         });
 
@@ -313,25 +341,34 @@
         dots.forEach((d, i) => i <= currentStep ? d.classList.add('active') : d.classList.remove('active'));
     }
 
-    function checkChoice(btn, idx) {
-        const correct = trailData[currentStep].a;
+    function checkChoice(btn, selectedIdx) {
+        const correctIdx = shuffledTrail[currentStep].a;
         const btns = document.querySelectorAll('.choice-btn');
+
+        // Desabilitar todos para evitar múltiplos cliques
         btns.forEach(b => b.style.pointerEvents = 'none');
 
-        if (idx === correct) {
+        if (selectedIdx === correctIdx) {
             btn.classList.add('correct');
-            sounds.correct.play();
+            sounds.correct.play().catch(e => { });
             score += 20;
             document.getElementById('points-badge').innerText = `XP: ${score}`;
         } else {
             btn.classList.add('wrong');
-            sounds.wrong.play();
-            btns[correct].classList.add('correct');
+            sounds.wrong.play().catch(e => { });
+            // Mostrar a correta entre os botões visíveis
+            btns.forEach(b => {
+                // Como não temos o índice original fácil aqui (pois o HTML é string), 
+                // vamos buscar pelo texto da opção correta guardada no shuffledTrail
+                if (b.innerText === shuffledTrail[currentStep].o[correctIdx]) {
+                    b.classList.add('correct');
+                }
+            });
         }
 
         setTimeout(() => {
             currentStep++;
-            sounds.step.play();
+            sounds.step.play().catch(e => { });
             renderStep();
         }, 1500);
     }

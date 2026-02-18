@@ -75,29 +75,31 @@
                 <h1 class="display-4 font-orbitron text-accent mb-2">PONTUAÇÃO SUPREMA!</h1>
                 <p class="fs-4 text-muted mb-5">Seu raciocínio lógico está em outra dimensão.</p>
 
-                <div class="row g-4 justify-content-center mb-5">
-                    <div class="col-md-4">
-                        <div class="final-stat-card">
-                            <i class="bi bi-lightning-fill text-accent"></i>
-                            <h2 id="final-xp">0</h2>
-                            <small>XP CONQUISTADO</small>
+                <div class="row g-3 g-md-4 justify-content-center mb-4 mb-md-5">
+                    <div class="col-6 col-md-4">
+                        <div class="final-stat-card p-3 p-md-4">
+                            <i class="bi bi-lightning-fill text-accent fs-2"></i>
+                            <h2 id="final-xp" class="mb-0">0</h2>
+                            <small class="d-block text-uppercase" style="font-size: 0.65rem;">XP</small>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="final-stat-card">
-                            <i class="bi bi-coin text-warning"></i>
-                            <h2 id="final-tc">0</h2>
-                            <small>TECCOINS</small>
+                    <div class="col-6 col-md-4">
+                        <div class="final-stat-card p-3 p-md-4">
+                            <i class="bi bi-coin text-warning fs-2"></i>
+                            <h2 id="final-tc" class="mb-0">0</h2>
+                            <small class="d-block text-uppercase" style="font-size: 0.65rem;">TecCoins</small>
                         </div>
                     </div>
                 </div>
 
-                <div class="d-flex justify-content-center gap-3">
-                    <button onclick="window.location.reload()" class="btn btn-purple btn-lg px-5 font-orbitron">
-                        <i class="bi bi-arrow-clockwise"></i> REPETIR DESAFIO
+                <div class="d-flex flex-column flex-md-row justify-content-center gap-2 gap-md-3">
+                    <button onclick="window.location.reload()"
+                        class="btn btn-purple btn-lg px-4 font-orbitron w-100 w-md-auto">
+                        <i class="bi bi-arrow-clockwise"></i> NOVO JOGO
                     </button>
-                    <a href="{{ url_for('atividades.menu') }}" class="btn btn-outline-accent btn-lg px-5 font-orbitron">
-                        VOLTAR AO HUB
+                    <a href="{{ url_for('atividades.menu') }}"
+                        class="btn btn-outline-accent btn-lg px-4 font-orbitron w-100 w-md-auto">
+                        SAIR
                     </a>
                 </div>
             </div>
